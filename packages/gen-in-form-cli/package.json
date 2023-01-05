@@ -1,0 +1,80 @@
+{
+    "name": "@derfrodo/gen-in-form-cli",
+    "version": "0.1.0-beta",
+    "description": "",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/derfrodo/InForm"
+    },
+    "main": "dist/index.js",
+    "bin": {
+        "gen-inform": "./dist/cli.js"
+    },
+    "watch": {
+        "alias": {
+            "patterns": [
+                "dist"
+            ],
+            "delay": 500
+        }
+    },
+    "scripts": {
+        "copyTemplates": "node copyTemplates",
+        "test": "jest --verbose",
+        "test:watch": "jest --watch",
+        "test:verbosewatch": "jest --verbose --coverage --watch",
+        "test:coverage": "jest --coverage",
+        "test:coverage-watch": "jest --coverage --watchAll",
+        "clean": "node clean.js",
+        "build": "tsc --project tsconfig.build.json && tsc-alias -p tsconfig.build.json && npm run copyTemplates",
+        "build:watchOld": "npm run copyTemplates && tsc -w --project tsconfig.build.json",
+        "buildAndAlias:watch": "npm run copyTemplates && concurrently \"npm run build:watch\" \"npm run alias:watch\"",
+        "buildAndAlias": "npm run build",
+        "build:watch": "npm run copyTemplates && tsc -w --project tsconfig.build.json",
+        "alias": "tsc-alias -p tsconfig.build.json",
+        "alias:watch": "npm-watch alias",
+        "prebuild": "npm run clean",
+        "prestart": "npm run clean",
+        "start": "tsc -w --project tsconfig.build.json",
+        "lint": "eslint src/**/*{.ts,.js,.tsx} --fix && eslint integrationtests/**/*{.ts,.js,.tsx} --fix",
+        "lint:testdata": "eslint testdata/**/*{.ts,.js,.tsx} --fix",
+        "linkruntime": "npm link ../gen-in-form-runtime",
+        "postinstall": "npm run linkruntime",
+        "generateReducers": "reducer-gen --loglevel info --addBubbleFlagForActions --analyseLiteralTypes",
+        "prepare": "cd ../.. && husky install"
+    },
+    "author": "Stefan Pauka",
+    "license": "MIT",
+    "dependencies": {
+        "@derfrodo/frodo-s-little-helpers": "^0.1.14",
+        "@derfrodo/reducer-gen": "^0.4.4-beta",
+        "@reduxjs/toolkit": "^1.8.2",
+        "handlebars": "^4.7.7",
+        "loglevel": "^1.7.1",
+        "npm-watch": "^0.11.0",
+        "redux": "^4.2.0",
+        "typescript": "^4.8.3",
+        "yargs": "^15.4.1"
+    },
+    "devDependencies": {
+        "@apollo/client": "^3.6.1",
+        "@babel/core": "^7.15.5",
+        "@babel/plugin-proposal-class-properties": "^7.14.5",
+        "@babel/plugin-proposal-decorators": "^7.15.4",
+        "@babel/preset-env": "^7.15.4",
+        "@babel/preset-typescript": "^7.15.0",
+        "@types/jest": "^25.2.3",
+        "@types/yargs": "^15.0.14",
+        "@typescript-eslint/eslint-plugin": "^2.34.0",
+        "@typescript-eslint/parser": "^2.34.0",
+        "@zerollup/ts-transform-paths": "^1.7.18",
+        "babel-jest": "^27.1.0",
+        "concurrently": "^7.3.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.15.0",
+        "eslint-plugin-prettier": "^3.4.1",
+        "husky": "^8.0.1",
+        "jest": "^27.1.0",
+        "tsc-alias": "^1.7.0"
+    }
+}

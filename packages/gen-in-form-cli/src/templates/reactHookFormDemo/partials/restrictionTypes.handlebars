@@ -1,0 +1,9 @@
+export type {{name}}FieldRestriction = {
+    readonly?: boolean;
+    required?: boolean;
+    hidden?: boolean;
+};
+
+export type {{name}}Restrictions = {
+    [key in keyof {{inputTypeInfo.typeName}}]?: {{name}}FieldRestriction;
+};

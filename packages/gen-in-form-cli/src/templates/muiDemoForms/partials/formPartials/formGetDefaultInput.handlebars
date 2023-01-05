@@ -1,0 +1,19 @@
+
+export function getDefault{{name}}Input(): {{inputTypeInfo.typeName}} {
+    return {
+        {{#each mappedInputProperties}}
+        {{name}}: {{#with (lookup @root.defaultValues name) as | over |
+            }}{{#ifIsEqual over.type "string" 
+                }}"{{over.value}}"{{else
+                }}{{over.value
+                }}{{/ifIsEqual
+            }}{{else
+        }}{{#ifIsEqual firstMapping.defaultValue.type "string" 
+                }}"{{firstMapping.defaultValue.value}}"{{else
+                }}{{firstMapping.defaultValue.value
+            }}{{/ifIsEqual
+        }}{{/with
+        }},
+        {{/each}}
+    }
+}

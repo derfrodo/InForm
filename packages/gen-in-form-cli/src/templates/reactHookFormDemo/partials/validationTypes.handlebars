@@ -1,0 +1,46 @@
+import { ErrorOption, FieldPath, RegisterOptions } from "react-hook-form";
+
+{{#if validationFunctionValueType}}
+
+export type {{name}}FieldError = {
+    type: string | (string[]);
+    message?: string | (string[]);
+};
+export type {{name}}ValidateError = (null | {{name}}FieldError | ({{name}}FieldError[]));
+export type {{name}}ValidateFieldCallback<T extends keyof {{inputTypeInfo.typeName}}> = (value: {{inputTypeInfo.typeName}}[T]) => {{name}}ValidateError
+
+export type {{name}}ValidationRulesResult = {
+    [key in keyof {{inputTypeInfo.typeName}}]?: {{name}}ValidateFieldCallback<key>
+};
+
+export type {{name}}ValidationResult = {
+    [key in keyof {{inputTypeInfo.typeName}}]?: {{name}}ValidateError
+};
+
+export function get{{name}}ErrorMessage(error: {{name}}ValidateError | undefined): string {
+    if (!error) {
+        return ""
+    }
+    if (Array.isArray(error)) {
+        return error.map(e => get{{name}}ErrorMessage(e)).filter(msg => msg !== "").join(", ")
+    }
+    if (Array.isArray(error.message)) {
+        return error.message.filter(msg => msg !== "").join(", ")
+    }
+    return error.message ?? "";
+}
+
+{{/if}}
+export type {{name}}ValidationRule<TFieldName extends FieldPath<{{inputTypeInfo.typeName}}> = FieldPath<{{inputTypeInfo.typeName}}>> =  
+    Omit<RegisterOptions<{{inputTypeInfo.typeName}}, TFieldName>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
+
+export type {{name}}ValidationRules = {
+    [key in FieldPath<{{inputTypeInfo.typeName}}>]?: {{name}}ValidationRule<key>
+}
+
+export type {{name}}Error = {
+    name: FieldPath<{{inputTypeInfo.typeName}}>, 
+    error: ErrorOption,
+    options?: {
+        shouldFocus: boolean;
+    }}

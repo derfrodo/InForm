@@ -1,0 +1,6 @@
+query getMe {
+    me:me
+    {
+        displayName
+    }
+}

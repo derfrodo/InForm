@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": false
+  },
+  "include": [
+      "plugin",
+  ],
+  "exclude": [
+      "**/*.test.ts",
+      "**/__mocks__/*.ts"
+  ]
+}

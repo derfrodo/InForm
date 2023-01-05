@@ -1,0 +1,19 @@
+{{>generatedFileHeader}}
+
+{{#each mergedImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{#each mergedadditionalImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{> importType inputTypeInfo }}
+
+{{#if validationFunctionValueType}}
+import { {{name}}ValidationResult, get{{name}}ErrorMessage } from "./UpdateUserFormTypes.generated";
+{{/if}}
+
+{{#if detailsTypeInfo}}
+{{>formUpdateMUI}}
+{{else}}
+{{>formCreateMUI}}
+{{/if}}

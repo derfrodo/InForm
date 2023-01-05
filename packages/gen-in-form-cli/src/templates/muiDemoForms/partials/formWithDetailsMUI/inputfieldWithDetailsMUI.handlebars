@@ -1,0 +1,67 @@
+{{#switchBy value=input.firstMapping.key context=.}}
+{{#case 'DATE'
+}}<TextField
+    type="date"
+    InputLabelProps={ { shrink: true } }
+    label="{{input.name}}"
+    defaultValue={ current.{{input.name}} ?? {{~#if detail}}originalValues?.{{detail.name}} ? new Date(originalValues?.{{detail.name}}).toLocaleDateString('en-CA') : ""{{else}}""{{/if~}} }
+    {{>formDateInputOnChange}}
+    {{>additionalAttributesMui}}
+/>
+{{/case
+}}{{#case 'STRING'
+}}<TextField
+    label="{{input.name}}"
+    defaultValue={ current.{{input.name}} ?? {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }
+    {{>formTextInputOnChange}}
+    {{>additionalAttributesMui}}
+/>
+{{/case
+}}{{#case 'NUMBER'
+}}<TextField
+    label="{{input.name}}"
+    inputProps={ {
+        step:1
+    } }
+    type="number"
+    defaultValue={ current.{{input.name}} ?? {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }
+    {{>formNumericInputOnChange}}
+    {{>additionalAttributesMui}}
+/>
+{{/case
+}}{{#case 'INTEGER'
+}}<TextField
+    label="{{input.name}}"
+    inputProps={ {
+        step:1
+    } }
+    type="number"
+    defaultValue={ current.{{input.name}} ?? {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }
+    {{>formNumericInputOnChange}}
+    {{>additionalAttributesMui}}
+/>
+{{/case
+}}{{#case 'SELECT'
+}}<FormControl sx={ { m: 1, minWidth: 120 } }>
+<InputLabel id={`${formId}_{{input.name}}`}>{{input.name}}</InputLabel>
+<Select
+    labelId={`${formId}_{{input.name}}`}
+    value={  current.{{input.name}} ?? {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }
+    label="{{input.name}}"
+    {{>formSelectInputOnChange}}
+    {{>additionalAttributesMuiNoHelper}}
+>
+    {{!-- <MenuItem value="">
+    <em>None</em>
+    </MenuItem> --}}
+    {{#each input.firstMapping.values}}
+    <MenuItem value={ {{~fullName~}} }>{ {{~fullName~}} }</MenuItem>
+    {{/each}}
+</Select>
+{{>addHelperText}}
+</FormControl>
+{{/case
+}}{{#default
+}}<div>Eingabe von ... {{ input.name }} mit type {{ input.typeNameFull }} {{#if detail}}... und Details als {{ detail.typeNameFull }}{{/if}}</div>
+{{#if detail}}<div>Wert: {originalValues?.{{detail.name~}}}</div>{{else}}<div>nicht im detail enthalten</div>{{/if}}{{/default
+}}{{/switchBy}}

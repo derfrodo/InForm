@@ -1,0 +1,27 @@
+{{#if validationFunctionValueType}}
+{{#ifStartsWith validationFunctionValueType.typeName "use" }}
+USEME
+{{else}}
+const getValidation = useCallback<ReturnType<(typeof {{validationFunctionValueType.typeName}})>>(
+    (u) => {{validationFunctionValueType.typeName}}(props.validationRules)(u),
+    [props.validationRules])
+{{/ifStartsWith}}
+
+const [currentV, setCurrentV] = useState<{{name}}ValidationResult>({})
+useEffect(() => {
+    const rules = getValidation(current);
+    let next: {{name}}ValidationResult = {};
+    for (const index in rules) {
+        const key = (index as keyof typeof rules);
+        if (Object.hasOwnProperty.call(rules, key)) {
+            const rule = rules[key];
+            if (rule) {
+                next[key] = rule(current[key as keyof typeof current]);
+
+            }
+        }
+    }
+    setCurrentV(next);
+}, [current, getValidation]);
+
+{{/if}}

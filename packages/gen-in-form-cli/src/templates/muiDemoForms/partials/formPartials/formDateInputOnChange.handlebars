@@ -1,0 +1,14 @@
+onChange={e => {
+    const v = e.target.value;
+    try{
+        const date = new Date(v);
+        if (isNaN(date.valueOf())) {
+            console.warn("Invalid date", {value: v});
+        } else {
+            const asString = date.toISOString();
+            setCurrent(p => ({...p, {{input.name}}: asString}));
+        }
+    }catch(e){
+        console.error("Failed to update date", e);
+    }
+}}

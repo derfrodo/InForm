@@ -1,0 +1,12 @@
+{{>generatedFileHeader}}
+
+{{#each mergedImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{> importType inputTypeInfo }}
+
+{{#if detailsTypeInfo}}
+{{>formUpdate}}
+{{else}}
+{{>formCreateMUI}}
+{{/if}}

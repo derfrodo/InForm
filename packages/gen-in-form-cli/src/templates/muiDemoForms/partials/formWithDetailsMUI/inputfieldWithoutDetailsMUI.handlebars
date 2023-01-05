@@ -1,0 +1,62 @@
+{{#switchBy value=input.firstMapping.key context=.}}
+{{#case 'DATE'
+}}<TextField
+    type="date"
+    InputLabelProps={ { shrink: true } }
+    label="{{input.name}}"
+    defaultValue={ current.{{input.name}} ? new Date(current.{{input.name}}).toLocaleDateString('en-CA') : "" }
+    {{>formDateInputOnChange}}
+/>
+{{/case
+}}{{#case 'STRING'
+}}<TextField
+    label="{{input.name}}"
+    defaultValue={ current.{{input.name}} }
+    {{>formTextInputOnChange}}
+/>
+{{/case
+}}{{#case 'NUMBER'
+}}<TextField
+    label="{{input.name}}"
+    inputProps={ {
+        step:1
+    } }
+    type="number"
+    defaultValue={ current.{{input.name}} }
+    {{>formNumericInputOnChange}}
+/>
+{{/case
+}}{{#case 'INTEGER'
+}}<TextField
+    label="{{input.name}}"
+    inputProps={ {
+        step:1
+    } }
+    type="number"
+    defaultValue={ current.{{input.name}} }
+    {{>formNumericInputOnChange}}
+/>
+{{/case
+}}{{#case 'SELECT'
+}}<FormControl sx={ { m: 1, minWidth: 120 } }>
+<InputLabel id={`${formId}_{{input.name}}`}>{{input.name}}</InputLabel>
+<Select
+    labelId={`${formId}_{{input.name}}`}
+    value={ current.{{input.name}} ?? "" }
+    label="{{input.name}}"
+    {{>formSelectInputOnChange}}
+>
+    {{!-- <MenuItem value="">
+    <em>None</em>
+    </MenuItem> --}}
+    {{#each input.firstMapping.values}}
+    <MenuItem value={ {{~fullName~}} }>{ {{~fullName~}} }</MenuItem>
+    {{/each}}
+</Select>
+{{!-- <FormHelperText>With label + helper text</FormHelperText> --}}
+</FormControl>
+{{/case
+}}{{#default
+}}<div>Eingabe von ... {{ input.name }} mit type {{ input.typeNameFull }} {{#if detail}}... und Details als {{ detail.typeNameFull }}{{/if}}</div>
+{{#if detail}}<div>Wert: {originalValues?.{{detail.name~}}}</div>{{else}}<div>nicht im detail enthalten</div>{{/if}}{{/default
+}}{{/switchBy}}

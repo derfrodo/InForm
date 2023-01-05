@@ -1,0 +1,10 @@
+# Write your query or mutation here
+mutation createUser($input: CreateUserInput!){
+  newUser: createUser(user:$input)
+    {
+        displayName,
+        id,
+        lastName,
+        firstName,
+    }
+}

@@ -1,0 +1,64 @@
+{{>importType detailsTypeInfo}}
+
+import { Box, Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, TextField, Typography, FormHelperText } from "@mui/material";
+import { useCallback, useState, useEffect, useMemo } from "react";
+
+{{>formGetDefaultInput}}
+
+{{>formMapDetailsToInput}}
+{{>formCreateFormId}}
+
+export interface {{name}}FormProps {
+{{#if detailsTypeInfo}}
+    originalValues: {{#if detailsTypeInfo.text}}{{detailsTypeInfo.text}}{{else}}{{detailsTypeInfo.typeName}}{{/if}} | null;
+{{/if}}
+    onUpdate: (next: {{inputTypeInfo.typeName}}) => void | Promise<void>;
+    {{>formAdditionalProperties}}
+}
+
+export function InForm{{name}}Mui(props: {{name}}FormProps){
+    const { originalValues, onUpdate } = props;
+    
+    const [current, setCurrent] = useState(map{{name}}DetailsToInput(originalValues))
+    {{>formFormIdHooks}}
+
+    const reset = useCallback(() => { setCurrent(map{{name}}DetailsToInput(originalValues)) }, [originalValues]);
+    useEffect(() => { reset(); resetFormId(); }, [reset, resetFormId]);
+
+    {{>formAddRestrictions}}
+    {{>formAddValidation}}
+
+    return <Box
+      key={`${formId}Box`}
+      component="form"
+      sx={
+        {
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }
+      }
+      noValidate
+      autoComplete="off"
+    >
+        <h2>{{name}}</h2>
+        <h3>Ich bin ein Formular für {{inputTypeInfo.typeName}}</h3>
+
+    {{#if byOrdering}}
+        {{#each byOrdering}}
+        {{#if input}}
+        {{>inputfieldWithDetailsMUI}}
+        {{else}}
+        {{>readonlyDetailsMUI}}
+        {{/if}}
+        {{/each}}
+    {{else}}
+        {{#each inputsWithMatchingDetails}}
+        {{>inputfieldWithDetailsMUI}}
+        {{/each}}
+    {{/if}}
+        <div style={ {width:"100%"} } />
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            <Button onClick={() => { onUpdate(current); }}>SAVE</Button>
+            <Button onClick={() => { reset(); }}>CANCEL</Button>
+        </ButtonGroup>
+    </Box>;
+}

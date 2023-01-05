@@ -1,0 +1,59 @@
+import { Box, Button, ButtonGroup, FormControl, InputLabel, MenuItem, Select, TextField, Typography, FormHelperText } from "@mui/material";
+import { useCallback, useState, useMemo } from "react";
+
+{{>formGetDefaultInput}}
+{{>formCreateFormId}}
+
+export interface {{name}}FormProps {
+    onCreate: (next: {{inputTypeInfo.typeName}}) => void | Promise<void>;
+    {{>formAdditionalProperties}}
+}
+
+export function InForm{{name}}Mui(props: {{name}}FormProps){
+    const { onCreate } = props;
+    const [current, setCurrent] = useState(getDefault{{name}}Input())
+    
+    {{>formFormIdHooks}}
+    
+    const reset = useCallback(() => { 
+        setCurrent(getDefault{{name}}Input());
+        resetFormId();
+    }, [resetFormId]);
+    
+    {{>formAddRestrictions}}
+    {{>formAddValidation}}
+
+    return <Box
+      key={`${formId}Box`}
+      component="form"
+      sx={
+        {
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+        }
+      }
+      noValidate
+      autoComplete="off"
+    >
+        <h2>{{name}}</h2>
+        <h3>Ich bin ein Formular für {{inputTypeInfo.typeName}}</h3>
+
+    {{#if byOrdering}}
+        {{#each byOrdering}}
+        {{#if input}}
+        {{>inputfieldWithoutDetailsMUI}}
+        {{else}}
+        {{>readonlyDetailsMUI}}
+        {{/if}}
+        {{/each}}
+    {{else}}
+        {{#each inputsWithMatchingDetails}}
+        {{>inputfieldWithoutDetailsMUI}}
+        {{/each}}
+    {{/if}}
+        <div style={ {width:"100%"} } />
+        <ButtonGroup variant="contained" aria-label="outlined primary button group">
+            <Button onClick={() => { onCreate(current); }}>SAVE</Button>
+            <Button onClick={() => { reset(); }}>CANCEL</Button>
+        </ButtonGroup>
+    </Box>;
+}

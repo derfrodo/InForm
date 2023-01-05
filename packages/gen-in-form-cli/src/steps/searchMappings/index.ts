@@ -1,0 +1,1 @@
+export { searchMappings } from "./searchMappings";

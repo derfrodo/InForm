@@ -1,0 +1,8 @@
+onChange={e => {
+    const v = e.target.value;
+    if (Object.values({{input.firstMapping.inputTypeName}}).indexOf(v as {{input.firstMapping.inputTypeName}}) >= 0) {
+        setCurrent(p => ({ ...p, {{input.name}}: v as {{input.firstMapping.inputTypeName}} }));
+    } else {
+        console.error("Failed to set value for {{input.firstMapping.inputTypeName}}", { value: v })
+    }
+}}

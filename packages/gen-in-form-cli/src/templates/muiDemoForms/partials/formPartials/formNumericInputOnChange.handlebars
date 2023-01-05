@@ -1,0 +1,7 @@
+onChange={e => {
+    const v = e.target.value; 
+    const vN = Number(v) 
+    if(typeof vN === "number" && !Number.isNaN(vN)){
+        setCurrent(p => ({...p, {{input.name}}: vN}));
+    }
+}}

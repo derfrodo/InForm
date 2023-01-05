@@ -1,0 +1,15 @@
+
+export function map{{name}}DetailsToInput(details: {{#if detailsTypeInfo.text}}{{detailsTypeInfo.text}}{{else}}{{detailsTypeInfo.typeName}}{{/if}}): {{inputTypeInfo.typeName}} {
+    const inputDefaults = getDefault{{name}}Input();
+    
+    if(details){
+        for(const index in inputDefaults){
+            if(Object.hasOwnProperty.call(details, index) && 
+                Object.hasOwnProperty.call(inputDefaults, index)){
+                (inputDefaults[index as keyof typeof inputDefaults] as any) = details[index as keyof typeof details]
+            }
+        }
+    }
+
+    return inputDefaults
+}

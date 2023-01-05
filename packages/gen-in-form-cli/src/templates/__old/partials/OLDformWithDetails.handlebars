@@ -1,0 +1,68 @@
+{{>importType detailsTypeInfo}}
+
+export interface {{name}}FormProps {
+{{#if detailsTypeInfo}}
+    originalValues: {{#if detailsTypeInfo.text}}{{detailsTypeInfo.text}}{{else}}{{detailsTypeInfo.typeName}}{{/if}} | null;
+{{/if}}
+    onUpdate: (next: {{inputTypeInfo.typeName}}) => void | Promise<void>;
+}
+
+export function InForm{{name}}(props: {{name}}FormProps){
+    const { originalValues } = props;
+    return <div>
+        <h2>{{name}}</h2>
+        <h3>Ich bin ein Formular für {{inputTypeInfo.typeName}}</h3>
+
+    {{#if byOrdering}}
+        {{#each byOrdering}}
+        {{#if input}}
+        {{>inputfieldWithDetails}}
+        {{else}}
+        nur details - readonly {{detail.name}}
+        {{/if}}
+        {{/each}}
+    {{else}}
+        {{#each inputsWithMatchingDetails}}
+        {{>inputfieldWithDetails}}
+        {{/each}}
+    {{/if}}
+    
+    
+    
+    <h3>Alter kram</h3>
+        {{#each inputsWithMatchingDetails}}
+
+            {{!-- {{#switch "key" input.firstMapping.key}}  --}}
+            {{#switchBy value=input.firstMapping.key context=.}} 
+                {{#case 'b'}} B {{/case}}
+                {{#case 'DATE'}}  
+                {{#switchBy value=input.firstMapping.key context=.}} 
+                    {{#case 'b'}} B {{/case}}
+                    {{#case 'DATE'}} DATE {{ input.name }} -- {{/case}} 
+                {{/switchBy}}
+                {{/case}} 
+                {{#case 'DATE'}} DATE2 {{ input.name }} -- {{json this}}{{/case}} 
+                {{#default}}
+        <div>Eingabe von ... {{ input.name }} mit type {{ input.typeNameFull }} {{#if detail}}... und Details als {{ detail.typeNameFull }}{{/if}}</div>
+        {{#if detail}}<div>Wert: {originalValues?.{{detail.name~}}}</div>{{else}}<div>nicht im detail enthalten</div>{{/if}}{{/default}}
+            {{/switchBy}}
+
+        {{/each}}
+
+        {{#each inputsWithMatchingDetails}}
+        <div>Eingabe von ... {{ input.name }} mit type {{ input.typeNameFull }} {{#if detail}}... und Details als {{ detail.typeNameFull }}{{/if}}</div>
+        {{#if detail}}<div>Wert: {originalValues?.{{detail.name~}}}</div>{{else}}<div>nicht im detail enthalten</div>{{/if}}
+        {{/each}}
+        
+        <h3>Diese Details sind übrig</h3>
+        {{#each detailsWithoutInputs}}
+        <div>Detail für ... {{ name }} mit type {{ typeNameFull }}</div>
+        <div>Wert: {originalValues?.{{name~}}}</div>
+        {{/each}}
+
+        <h3>Das sind die Inputs ohne details</h3>
+        {{#each inputsWithoutDetails}}
+        <div>Input für ... {{ name }} mit type {{ typeNameFull }}</div>
+        {{/each}}
+    </div>;
+}

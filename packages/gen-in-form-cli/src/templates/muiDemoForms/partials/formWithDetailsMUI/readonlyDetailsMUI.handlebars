@@ -1,0 +1,38 @@
+{{#switchBy value=detail.firstMapping.key context=.}} 
+{{#case 'DATE'
+}}<div>
+    <label>{{detail.name}}</label>&nbsp;
+    <span>{ originalValues?.{{detail.name}} ? new Date(originalValues?.{{detail.name}}).toLocaleDateString() : "" }</span>
+</div>
+{{/case
+}}{{#case 'STRING'
+}}<Typography>
+{{detail.name}} { {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }
+</Typography>
+{{!-- <div>
+    <label>{{detail.name}}</label>&nbsp;
+    <span>{ {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }</span>
+</div> --}}
+{{/case
+}}{{#case 'INTEGER'
+}}<div>
+    <label>{{detail.name}}</label>&nbsp;
+    <span>{ {{~#if detail}}originalValues?.{{detail.name}} ?? ""{{else}}""{{/if~}} }</span>
+</div>
+{{/case
+}}{{#case 'SELECT'
+}}<div>
+    <label>{{input.name}}</label>&nbsp;
+    <select defaultValue={ {{~#if detail}}originalValues?.{{detail.name}} ?? "null"{{else}}"---"{{/if~}} }>
+        <option value={"null"}>---</option>
+        {{#each input.firstMapping.values}}
+        <option value={ {{~fullName~}} }>{ {{~fullName~}} }</option>
+        {{/each}}
+        {{!-- <option defaultValue={"null"}>---</option> --}}
+    </select>
+</div>
+{{/case
+}}{{#default
+}}<div>Eingabe von ... {{ detail.name }} mit type {{ detail.typeNameFull }} {{#if detail}}... und Details als {{ detail.typeNameFull }}{{/if}}</div>
+{{#if detail}}<div>Wert: {originalValues?.{{detail.name~}}}</div>{{else}}<div>nicht im detail enthalten</div>{{/if}}{{/default
+}}{{/switchBy}}

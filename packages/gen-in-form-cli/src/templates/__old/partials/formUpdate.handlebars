@@ -1,0 +1,34 @@
+{{>importType detailsTypeInfo}}
+
+
+{{>formGetDefaultInput}}
+
+
+export interface {{name}}FormProps {
+{{#if detailsTypeInfo}}
+    originalValues: {{#if detailsTypeInfo.text}}{{detailsTypeInfo.text}}{{else}}{{detailsTypeInfo.typeName}}{{/if}} | null;
+{{/if}}
+    onUpdate: (next: {{inputTypeInfo.typeName}}) => void | Promise<void>;
+}
+
+export function InForm{{name}}(props: {{name}}FormProps){
+    const { originalValues } = props;
+    return <div>
+        <h2>{{name}}</h2>
+        <h3>Ich bin ein Formular für {{inputTypeInfo.typeName}}</h3>
+
+    {{#if byOrdering}}
+        {{#each byOrdering}}
+        {{#if input}}
+        {{>inputfieldWithDetails}}
+        {{else}}
+        {{>readonlyDetails}}
+        {{/if}}
+        {{/each}}
+    {{else}}
+        {{#each inputsWithMatchingDetails}}
+        {{>inputfieldWithDetails}}
+        {{/each}}
+    {{/if}}
+    </div>;
+}

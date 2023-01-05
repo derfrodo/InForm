@@ -1,0 +1,65 @@
+# Provides information about the author of the field
+directive @author(
+  name: String
+  email: String!
+) on FIELD_DEFINITION
+
+# InForm check for lenth.
+directive @inFormLength(
+  min: Int
+  max: Int
+) on INPUT_FIELD_DEFINITION | FIELD_DEFINITION
+
+# InForm check for range.
+directive @inFormRange(
+  min: Int
+  max: Int
+) on INPUT_FIELD_DEFINITION
+
+type Contact {
+  # The Id of the contact.
+  id: String!
+  # The name of the contact.
+  displayName: String!
+  lastName: String!
+  firstName: String!
+}
+
+input CreateUserInput {
+  id: String! = ""
+  displayName: String!
+  lastName: String! @inFormLength(min: 1, max: 299)
+  firstName: String! @inFormLength(min: 1, max: 299)
+  age: Int! @inFormRange(max: 299)
+  gender: Genders!
+}
+
+enum Genders {
+  NONE
+  M
+  W
+  D
+}
+
+type Mutation {
+  createUser(user: CreateUserInput!): User
+}
+
+type Query {
+  me: User @author(name: "Tom Pumpkin", email: "ztx0673@gmail.com")
+  users: [User]
+  user(id: ID): User
+  contacts: [Contact]
+  contact(id: ID): Contact
+}
+
+type User {
+  # The Id of the user.
+  id: String!
+  # The name of the user.
+  displayName: String! @inFormLength(min: 1, max: 299)
+  lastName: String!
+  firstName: String!
+  age: Int!
+  gender: Genders!
+}

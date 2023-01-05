@@ -1,0 +1,93 @@
+import { getTypescriptFilesPatterns } from "@src/arguments/FilePatterns";
+import { getDefaultArgs } from "@src/arguments/getDefaultArgs";
+import { CliArgsValues } from "@src/common/types/CliArgsValues";
+import { getGeneratorLogger } from "@src/logging/getGeneratorLogger";
+import { performSteps } from "@src/steps";
+
+jest.mock("@src/logging/getGeneratorLogger");
+jest.mock("@src/arguments/getDefaultArgs", () => {
+    const actuals = jest.requireActual("@src/arguments/getDefaultArgs");
+    return {
+        ...actuals,
+        getDefaultArgs: jest.fn(),
+    };
+});
+
+const getDefaultArgsBaseTests: typeof getDefaultArgs = () => {
+    const result: ReturnType<typeof getDefaultArgs> = {
+        loglevel: "info",
+        srcFolder: "./testdata/graphqlTestsDEBUG",
+        mappingFilesPattern: getTypescriptFilesPatterns(),
+        globalSettingsFilesPattern: getTypescriptFilesPatterns(),
+        programFilesPattern: getTypescriptFilesPatterns(),
+        logAsts: false,
+        fileEncoding: "utf-8",
+
+        templatePartialsRecursive: true,
+        templatePartialsPath: ["./src/templates/muiDemoForms/partials"],
+        templatesPath: "./src/templates/muiDemoForms",
+        templateGenerateOncePath: [],
+        templateScaffoldPath: [],
+        templateScaffoldOncePath: [],
+    };
+    return result;
+};
+
+const getDefaultArgsMock = getDefaultArgs as jest.MockedFunction<
+    typeof getDefaultArgs
+>;
+
+describe("performSteps debug integtration tests", () => {
+    // beforeAll(async () => {});
+
+    beforeEach(async () => {
+        jest.clearAllMocks();
+        getDefaultArgsMock.mockImplementation(getDefaultArgsBaseTests);
+    });
+
+    it("Given performSteps exists When called Then it can be debugged", async () => {
+        const vargs: CliArgsValues = {
+            ...getDefaultArgsBaseTests(),
+        } as unknown as CliArgsValues;
+        await performSteps(vargs);
+        expect(getGeneratorLogger().info).toBeCalledWith(
+            expect.stringContaining("🧙‍♂️🧙‍♀️")
+        );
+    }, 15000);
+
+    it("Given performSteps exists When called for hooks Then it can be debugged", async () => {
+        const vargs: CliArgsValues = {
+            ...getDefaultArgsBaseTests(),
+            srcFolder: "./testdata/graphqlTestsDEBUGHook",
+            templatesPath: "./src/templates/reactHookFormDemo",
+            templatePartialsPath: [
+                "./src/templates/reactHookFormDemo/partials",
+            ],
+            templateGenerateOncePath: [
+                "./src/templates/reactHookFormDemo/generateOnce",
+            ],
+        } as unknown as CliArgsValues;
+        await performSteps(vargs);
+        expect(getGeneratorLogger().info).toBeCalledWith(
+            expect.stringContaining("🧙‍♂️🧙‍♀️")
+        );
+    }, 15000);
+
+    it("Given performSteps exists When called for maybes Then it can be debugged", async () => {
+        const vargs: CliArgsValues = {
+            ...getDefaultArgsBaseTests(),
+            srcFolder: "./testdata/graphqlTestsDEBUGMaybes",
+            templatesPath: "./src/templates/reactHookFormDemo",
+            templatePartialsPath: [
+                "./src/templates/reactHookFormDemo/partials",
+            ],
+            templateGenerateOncePath: [
+                "./src/templates/reactHookFormDemo/generateOnce",
+            ],
+        } as unknown as CliArgsValues;
+        await performSteps(vargs);
+        expect(getGeneratorLogger().info).toBeCalledWith(
+            expect.stringContaining("🧙‍♂️🧙‍♀️")
+        );
+    }, 15000);
+});

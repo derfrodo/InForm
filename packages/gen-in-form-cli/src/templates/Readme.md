@@ -1,0 +1,1 @@
+Here we should have the default templates, right?

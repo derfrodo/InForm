@@ -1,0 +1,10 @@
+{{#if getInputRestrictionsFunctionValueType}}
+{{#ifStartsWith getInputRestrictionsFunctionValueType.typeName "use" }}
+USEME
+{{else}}
+const getRestriction = useCallback<ReturnType<(typeof {{getInputRestrictionsFunctionValueType.typeName}})>>(
+    (u) => {{getInputRestrictionsFunctionValueType.typeName}}(props.inputRestrictions)(u),
+    [props.inputRestrictions])
+{{/ifStartsWith}}
+
+{{/if}}

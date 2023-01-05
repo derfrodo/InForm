@@ -1,0 +1,11 @@
+
+export function getDefault{{name}}InputBase(): {{inputTypeInfo.typeName}} {
+    return {
+        {{#each mappedInputProperties}}
+        {{toPropertyName this}}: {{#with (lookup @root.defaultValues name) as | over |
+            }}{{toPropertyValue over}}{{else
+        }}{{toPropertyValue firstMapping.defaultValue}}{{/with
+        }},
+        {{/each}}
+    }
+}
