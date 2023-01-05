@@ -1,5 +1,5 @@
 # This is a basic workflow that is manually triggered
-name: Build and publish Beta
+name: Build and publish CLI Beta
 
 on:
   push:
