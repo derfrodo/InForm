@@ -54,5 +54,4 @@ jobs:
       artefactName: ${{ needs.prepare.outputs.artefactName }}
       nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
       packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
-      artefactName: 'gen-in-form-cli'
       folderWithPackage: packages/gen-in-form-cli
