@@ -13,9 +13,6 @@ on:
       nodeVersions:
         required: true
         type: string
-      packageName:
-        required: true
-        type: string
       folderWithPackage:
         required: true
         type: string
