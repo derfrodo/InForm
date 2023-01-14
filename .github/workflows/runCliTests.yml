@@ -65,7 +65,7 @@ jobs:
       shell: bash
       working-directory: packages/gen-in-form-cli
       run: npm run generateReducers
-    - uses: ./.github/workflows/templateInstallTestAndBuild.yml
+    - uses: ./.github/workflows/actionInstallTestAndBuild
       with:
         artefactName: ${{ needs.prepare.outputs.artefactName }}
         nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
