@@ -42,7 +42,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Using Node.js ${{ env.nodeVersion }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ env.nodeVersion }}
     - name: Read Deployed Versions
@@ -118,7 +118,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Using Node.js ${{ env.nodeVersion }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ env.nodeVersion }}
 
