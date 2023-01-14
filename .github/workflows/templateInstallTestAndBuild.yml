@@ -33,12 +33,6 @@ jobs:
       with:
         node-version: ${{ matrix.nodeVersion }}
     
-    
-    - name: Install dependencies for ${{ inputs.folderWithPackage }}
-      shell: bash
-      working-directory: ${{ inputs.folderWithPackage }}
-      run: npm ci
-    
     - name: perform unittests (${{ inputs.folderWithPackage }})
       shell: bash
       working-directory: ${{ inputs.folderWithPackage }}

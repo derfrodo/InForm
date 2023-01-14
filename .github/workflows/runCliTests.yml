@@ -49,9 +49,18 @@ jobs:
   build:
     needs: 
     - prepare
-    uses: ./.github/workflows/templateInstallTestAndBuild.yml
-    with:
-      artefactName: ${{ needs.prepare.outputs.artefactName }}
-      nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
-      packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
-      folderWithPackage: packages/gen-in-form-cli
+    steps:
+    - name: Install dependencies
+      shell: bash
+      working-directory: packages/gen-in-form-cli
+      run: npm ci
+    - name: Generate Reducers
+      shell: bash
+      working-directory: packages/gen-in-form-cli
+      run: npm run generateReducers
+    - uses: ./.github/workflows/templateInstallTestAndBuild.yml
+      with:
+        artefactName: ${{ needs.prepare.outputs.artefactName }}
+        nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
+        packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
+        folderWithPackage: packages/gen-in-form-cli
