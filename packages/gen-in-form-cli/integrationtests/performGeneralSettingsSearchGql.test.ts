@@ -85,8 +85,10 @@ describe("performGeneralSettingsSearch integtration tests", () => {
     it("Given performGeneralSettingsSearch exists When called Then it finds three files", async () => {
         await searchGeneralSettings();
 
-        expect(getGeneratorLogger().info).toBeCalledWith(
-            `Found ${16} files which may contain general settings for forms.`
+        const info = getGeneratorLogger().info;
+
+        expect(info).toBeCalledWith(
+            `Found 16 files which may contain general settings for forms.`
         );
     });
 
