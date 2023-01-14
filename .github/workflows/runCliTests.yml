@@ -52,6 +52,8 @@ jobs:
     - prepare
     name: "Perform stuff"
     steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ matrix.nodeVersion }}
     - name: Install dependencies
       shell: bash
       working-directory: packages/gen-in-form-cli
