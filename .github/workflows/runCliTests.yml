@@ -1,0 +1,58 @@
+# This is a basic workflow that is manually triggered
+name: Run Tests for CLI (while not released)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - packages/gen-in-form-cli/**
+  workflow_dispatch:
+
+env:
+  nodeVersion: 16.x
+  artefactName: "derfrodo_gen-in-form-cli"
+
+jobs:
+
+  readver:
+    uses: ./.github/workflows/templateReadPackageVersion.yml
+    with:
+      folderWithPackage: packages/gen-in-form-cli
+      packageName: "@derfrodo/gen-in-form-cli"
+    secrets:
+      testsecret: demosecret
+
+  readname:
+    uses: ./.github/workflows/templateReadPackageName.yml
+    with:
+      folderWithPackage: packages/gen-in-form-cli
+
+  prepare: 
+    runs-on: ubuntu-latest
+    name: "Prepare run"
+    needs: 
+    - readver
+    - readname
+    outputs:
+      packageName: ${{ needs.readname.outputs.packageName  }}
+      packageVersion: ${{ needs.readver.outputs.packageVersion  }}
+      packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
+      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      nodeVersion: ${{ env.nodeVersion }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.nodeVersion }}
+
+  build:
+    needs: 
+    - prepare
+    uses: ./.github/workflows/templateInstallTestAndBuild.yml
+    with:
+      artefactName: ${{ needs.prepare.outputs.artefactName }}
+      nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
+      packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
+      artefactName: 'gen-in-form-cli'
+      folderWithPackage: packages/gen-in-form-cli

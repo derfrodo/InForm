@@ -1,0 +1,62 @@
+#https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
+name: Create Bundled Package 
+
+on:
+  workflow_call:
+    inputs:
+      packageVersion:
+        required: false
+        type: string
+      artefactName:
+        required: false
+        type: string
+      nodeVersions:
+        required: true
+        type: string
+      packageName:
+        required: true
+        type: string
+      folderWithPackage:
+        required: true
+        type: string
+
+jobs:
+  build:
+  
+    strategy:
+      matrix:
+        nodeVersion: ${{ fromJSON(inputs.nodeVersions) }}
+        
+    name: "Test, build and bundle package (NodeJS ${{ matrix.nodeVersion }})"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ matrix.nodeVersion }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.nodeVersion }}
+    
+    
+    - name: Install dependencies for ${{ inputs.folderWithPackage }}
+      shell: bash
+      working-directory: ${{ inputs.folderWithPackage }}
+      run: npm ci
+    
+    - name: perform unittests (${{ inputs.folderWithPackage }})
+      shell: bash
+      working-directory: ${{ inputs.folderWithPackage }}
+      run: |
+        npm test
+    
+    - name: build bundle (${{ inputs.folderWithPackage }})
+      shell: bash
+      working-directory: ${{ inputs.folderWithPackage }}
+      run: |
+        npm run build
+        rm -rf node_modules
+
+    - name: Publish artefact with name (${{ inputs.artefactName }}-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }})
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ inputs.artefactName }}-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
+        path: ${{ inputs.folderWithPackage }}
