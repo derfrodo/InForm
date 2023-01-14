@@ -1,5 +1,5 @@
 #https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
-name: Create Bundled Package 
+name: TEMPLATE Test and Build Node package
 
 on:
   workflow_call:
