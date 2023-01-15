@@ -32,10 +32,19 @@ describe("performSteps integtration tests for templates", () => {
         } as unknown as CliArgsValues;
         await performSteps(vargs);
         const info = getGeneratorLogger().info;
+        const infoMock = info as jest.MockedFunction<typeof info>;
 
-        expect(info).toBeCalledWith(
-            'Found template "nesttest" in file "testdata\\testTemplates\\partials\\nesttest\\nesttest.handlebars".'
-        );
+        const foundTemplateCalls = infoMock.mock.calls.filter((v) => {
+            const msg = v[0];
+            return (
+                typeof msg === "string" &&
+                /Found template "nesttest" in file "testdata[\\\/]testTemplates[\\\/]partials[\\\/]nesttest[\\\/]nesttest.handlebars"./.test(
+                    msg
+                )
+            );
+        });
+
+        expect(foundTemplateCalls.length).toBe(1);
     }, 15000);
 
     it("Given performSteps exists When called AND nested partials shall be resolved Then expected templates are found", async () => {
@@ -53,6 +62,15 @@ describe("performSteps integtration tests for templates", () => {
             );
         });
 
-        expect(foundTemplateCalls).toBe([]);
+        expect(foundTemplateCalls).toBe(
+            expect.arrayContaining([
+                expect.stringContaining(
+                    'Found template "nesttest" in file "testdata'
+                ),
+                expect.stringContaining(
+                    'Found template "emptybase" in file "testdata'
+                ),
+            ])
+        );
     }, 15000);
 });
