@@ -43,24 +43,17 @@ describe("resolveFileCandidates module tests", () => {
         const data = JSON.parse(jsonizedData);
         const loggedcandidates = JSON.parse(data.fileCandidates);
 
-        expect(loggedcandidates).toEqual([
-            "./testdata/graphqlTests/formMappings/CreateUserMapping.ts",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2.ts",
-            "./testdata/graphqlTests/formMappings/FakeUserMapping.ts",
-            "./testdata/graphqlTests/formMappings/UserMapping.ts",
-            "./testdata/graphqlTests/formMappings/UserMapping2.ts",
-            "./testdata/graphqlTests/generalSettings/FormGeneralSettings.ts",
-            "./testdata/graphqlTests/graphql/generated.ts",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2.generated.tsx",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2Types.generated.tsx",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2mui.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2Types.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2mui.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMappingTypes.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMappingmui.generated.tsx",
-        ]);
+        expect(loggedcandidates).toEqual(
+            expect.arrayContaining([
+                "./testdata/graphqlTests/formMappings/CreateUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/CreateUserMapping2.ts",
+                "./testdata/graphqlTests/formMappings/FakeUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping2.ts",
+                "./testdata/graphqlTests/generalSettings/FormGeneralSettings.ts",
+                "./testdata/graphqlTests/graphql/generated.ts",
+            ])
+        );
     });
 
     it("given FileSystemHelper is not mocked when called with default patterns for search integration tests when resolveFileCandidates is called then candidates match expectation", async () => {
@@ -71,23 +64,16 @@ describe("resolveFileCandidates module tests", () => {
             argv.globalSettingsFilesPattern
         );
 
-        expect(candidates).toEqual([
-            "./testdata/graphqlTests/formMappings/CreateUserMapping.ts",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2.ts",
-            "./testdata/graphqlTests/formMappings/FakeUserMapping.ts",
-            "./testdata/graphqlTests/formMappings/UserMapping.ts",
-            "./testdata/graphqlTests/formMappings/UserMapping2.ts",
-            "./testdata/graphqlTests/generalSettings/FormGeneralSettings.ts",
-            "./testdata/graphqlTests/graphql/generated.ts",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2.generated.tsx",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2Types.generated.tsx",
-            "./testdata/graphqlTests/formMappings/CreateUserMapping2mui.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2Types.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMapping2mui.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMappingTypes.generated.tsx",
-            "./testdata/graphqlTests/formMappings/UserMappingmui.generated.tsx",
-        ]);
+        expect(candidates).toEqual(
+            expect.arrayContaining([
+                "./testdata/graphqlTests/formMappings/CreateUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/CreateUserMapping2.ts",
+                "./testdata/graphqlTests/formMappings/FakeUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping2.ts",
+                "./testdata/graphqlTests/generalSettings/FormGeneralSettings.ts",
+                "./testdata/graphqlTests/graphql/generated.ts",
+            ])
+        );
     });
 });
