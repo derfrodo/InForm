@@ -38,7 +38,7 @@ runs:
       rm -rf node_modules
 
   - name: Publish artefact
-    uses: actions/upload-artifact@v2
+    uses: actions/upload-artifact@v3
     with:
       name: ${{ inputs.artefactName }}-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
       path: ${{ inputs.folderWithPackage }}
