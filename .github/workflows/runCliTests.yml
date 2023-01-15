@@ -49,7 +49,7 @@ jobs:
   build:
     strategy:
       matrix:
-        nodeVersion: ${{ fromJSON('["${{ needs.prepare.outputs.nodeVersion }}"]') }}
+        nodeVersion: ["${{ needs.prepare.outputs.nodeVersion }}"]
     runs-on: ubuntu-latest
     needs: 
     - prepare
