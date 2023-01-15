@@ -70,6 +70,6 @@ jobs:
       run: npm run generateReducers
     - uses: ./.github/workflows/actionInstallTestAndBuild
       with:
-        artefactName: ${{ needs.prepare.outputs.artefactName }}
+        artefactName: "${{ needs.prepare.outputs.artefactName }}"
         packageVersion:  ${{ needs.prepare.outputs.packageVersion  }}
         folderWithPackage: packages/gen-in-form-cli
