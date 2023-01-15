@@ -14,7 +14,6 @@ jest.mock("@src/logging/getGeneratorLogger");
 jest.mock("@src/globalState/store");
 const storeMock = store as jest.Mocked<typeof store>;
 
-
 jest.mock("@src/arguments/getDefaultArgs", () => {
     const actuals = jest.requireActual("@src/arguments/getDefaultArgs");
     return {
@@ -53,7 +52,9 @@ describe("performGeneralSettingsSearch integtration tests", () => {
             };
             return result;
         });
-        getDefaultArgsMock.mockImplementation(getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests);
+        getDefaultArgsMock.mockImplementation(
+            getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests
+        );
     });
 
     it("Given performGeneralSettingsSearch exists When called Then logger should be called with welcome message", async () => {
@@ -75,7 +76,10 @@ describe("performGeneralSettingsSearch integtration tests", () => {
         );
 
         const debugMock = debug as jest.MockedFunction<typeof debug>;
-        const jsonizedData = debugMock.mock.calls[1][1];
+        const call = debugMock.mock.calls.find(
+            (value) => value[0] === `Files candidates resolved: `
+        );
+        const jsonizedData = call[1];
         const data = JSON.parse(jsonizedData);
         const loggedcandidates = JSON.parse(data.fileCandidates);
 
@@ -101,7 +105,7 @@ describe("performGeneralSettingsSearch integtration tests", () => {
             "1 files contains general settings for in form."
         );
     });
-    
+
     it("Given performGeneralSettingsSearch exists When called Then it saves a setting in store", async () => {
         const settings = await searchGeneralSettings();
 
