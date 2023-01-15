@@ -64,7 +64,7 @@ describe("performGeneralSettingsSearch integtration tests", () => {
         );
     });
 
-    it("Given performGeneralSettingsSearch exists When called Then it finds three files", async () => {
+    it("Given performGeneralSettingsSearch exists When called Then it finds 16 files", async () => {
         await searchGeneralSettings();
 
         const info = getGeneratorLogger().info;
