@@ -64,16 +64,44 @@ describe("performGeneralSettingsSearch integtration tests", () => {
         );
     });
 
+    it("Given performGeneralSettingsSearch exists When called Then it finds expected files as candidates", async () => {
+        await searchGeneralSettings();
+
+        const debug = getGeneratorLogger().debug;
+
+        expect(debug).toBeCalledWith(
+            `Files candidates resolved: `,
+            expect.any(String)
+        );
+
+        const debugMock = debug as jest.MockedFunction<typeof debug>;
+        const jsonizedData = debugMock.mock.calls[1][1];
+        const data = JSON.parse(jsonizedData);
+        const loggedcandidates = JSON.parse(data.fileCandidates);
+
+        expect(loggedcandidates).toEqual(
+            expect.arrayContaining([
+                "./testdata/graphqlTests/formMappings/CreateUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/CreateUserMapping2.ts",
+                "./testdata/graphqlTests/formMappings/FakeUserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping.ts",
+                "./testdata/graphqlTests/formMappings/UserMapping2.ts",
+                "./testdata/graphqlTests/generalSettings/FormGeneralSettings.ts",
+                "./testdata/graphqlTests/graphql/generated.ts",
+            ])
+        );
+    });
+
     it("Given performGeneralSettingsSearch exists When called Then it finds 16 files", async () => {
         await searchGeneralSettings();
 
         const info = getGeneratorLogger().info;
 
         expect(info).toBeCalledWith(
-            `Found 16 files which may contain general settings for forms.`
+            "1 files contains general settings for in form."
         );
     });
-
+    
     it("Given performGeneralSettingsSearch exists When called Then it saves a setting in store", async () => {
         const settings = await searchGeneralSettings();
 
