@@ -1,0 +1,90 @@
+#https://docs.github.com/en/actions/using-workflows/reusing-workflows#example-reusable-workflow
+name: Create Bundled Package 
+
+on:
+  workflow_call:
+    inputs:
+      packageVersion:
+        required: false
+        type: string
+      artefactName:
+        required: false
+        type: string
+      nodeVersions:
+        required: true
+        type: string
+      include:
+        required: true
+        type: string
+
+jobs:
+  build:
+  
+    strategy:
+      matrix:
+        nodeVersion: ${{ fromJSON(inputs.nodeVersions) }}
+        include: ${{ fromJSON(inputs.include) }}
+    name: "Test, build and bundle package (NodeJS ${{ matrix.nodeVersion }})"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ matrix.nodeVersion }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.nodeVersion }}
+    
+    
+    - name: Write artefact name
+      shell: bash
+      run: |
+        echo "Has Artefact Name"
+        echo ${{ matrix.artefactName != 0 }}
+        echo "Artefact"
+        echo ${{ matrix.artefactName }}
+        echo "PackageVersion"
+        echo ${{ matrix.packageVersion }}
+        echo "Version"
+        echo ${{ matrix.nodeVersion }}
+        echo "INCLUDES"
+        echo ${{ inputs.include }}
+    
+    - name: perform installation (npm ci)
+      shell: bash
+      run: cd lib && npm ci
+    
+    - name: perform unittests
+      shell: bash
+      run: |
+        cd lib
+        npm test
+    
+    - name: build bundle (no installation)
+      shell: bash
+      run: cd lib && npm run build:NoInstall
+      
+    - name: Prepare package for publishing
+      shell: bash
+      run: |
+        cd lib
+        npm run prepareForPublish:NoBuildNoClean
+
+    - name: Publish artefact with name from matrix (${{ matrix.artefactName }})
+      if: ${{ matrix.artefactName != 0 }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ matrix.artefactName }}
+        path: "lib"
+
+    - name: Publish artefact with name from inputs (${{ inputs.artefactName }})
+      if: ${{ matrix.artefactName == 0 && inputs.artefactName != 0}}
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artefactName }}
+        path: "lib"
+
+    - name: Publish artefact with generic name (artefact-derfrodo-reducer-gen-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }})
+      if: ${{ matrix.artefactName == 0 && inputs.artefactName == 0}}
+      uses: actions/upload-artifact@v3
+      with:
+        name: artefact-derfrodo-reducer-gen-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
+        path: "lib"
