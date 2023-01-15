@@ -79,7 +79,7 @@ describe("performGeneralSettingsSearch integtration tests", () => {
         const call = debugMock.mock.calls.find(
             (value) => value[0] === `Files candidates resolved: `
         );
-        const jsonizedData = call[1];
+        const jsonizedData = call ? call[1] : '{fileCandidates: "[]"}';
         const data = JSON.parse(jsonizedData);
         const loggedcandidates = JSON.parse(data.fileCandidates);
 
