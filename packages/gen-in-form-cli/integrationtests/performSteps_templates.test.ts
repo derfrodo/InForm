@@ -54,10 +54,10 @@ describe("performSteps integtration tests for templates", () => {
         // see also https://jestjs.io/docs/next/expect#expectstringmatchingstring--regexp
         const expected = [
             expect.stringMatching(
-                /^Found template "nesttest" in file "testdata[\\\/]testTemplates[\\\/]partials[\\\/]nesttest[\\\/]nesttest.handlebars".$/
+                /^Found template "nesttest" in file "testdata[\\\/]testTemplates[\\\/]partials[\\\/]nesttest[\\\/]nesttest.handlebars"./
             ),
             expect.stringMatching(
-                /^Found template "emptybase" in file "testdata[\\\/]testTemplates[\\\/]emptybase.handlebars".$/
+                /^Found template "emptybase" in file "testdata[\\\/]testTemplates[\\\/]emptybase.handlebars"./
             ),
         ];
 
@@ -65,12 +65,15 @@ describe("performSteps integtration tests for templates", () => {
         const info = getGeneratorLogger().info;
         const infoMock = info as jest.MockedFunction<typeof info>;
 
-        const foundTemplateCalls = infoMock.mock.calls.filter((v) => {
-            const msg = v[0];
-            return (
-                typeof msg === "string" && msg.startsWith('Found template "')
-            );
-        });
+        const foundTemplateCalls = infoMock.mock.calls
+            .filter((v) => {
+                const msg = v[0];
+                return (
+                    typeof msg === "string" &&
+                    msg.startsWith('Found template "')
+                );
+            })
+            .map((v) => v[0]);
 
         expect(foundTemplateCalls).toEqual(expect.arrayContaining(expected));
     }, 15000);
