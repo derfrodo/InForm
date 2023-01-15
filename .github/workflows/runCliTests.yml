@@ -37,7 +37,7 @@ jobs:
       packageName: ${{ needs.readname.outputs.packageName  }}
       packageVersion: ${{ needs.readver.outputs.packageVersion  }}
       packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
-      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      artefactName: "${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}"
       nodeVersion: ${{ env.nodeVersion }}
     steps:
     - uses: actions/checkout@v3
