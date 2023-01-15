@@ -1,6 +1,6 @@
 import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
-import { getTypescriptFilesPatterns } from "@src/arguments/FilePatterns";
 import { getDefaultArgs } from "@src/arguments/getDefaultArgs";
+import { getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests } from "@src/arguments/testDefaults/getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests";
 import { PromiseGenericParameter } from "@src/common/types/PromiseGenericParameter";
 import { createInFormTypescriptProgram } from "@src/common/utils/createInFormProgram";
 import { createStateStepsDefaults } from "@src/globalState/createStateStepsDefaults";
@@ -14,24 +14,6 @@ jest.mock("@src/logging/getGeneratorLogger");
 jest.mock("@src/globalState/store");
 const storeMock = store as jest.Mocked<typeof store>;
 
-const getDefaultArgsBaseTests: typeof getDefaultArgs = () => {
-    const result: ReturnType<typeof getDefaultArgs> = {
-        loglevel: "info",
-        srcFolder: "./testdata/graphqlTests",
-        mappingFilesPattern: getTypescriptFilesPatterns(),
-        globalSettingsFilesPattern: getTypescriptFilesPatterns(),
-        programFilesPattern: getTypescriptFilesPatterns(),
-        logAsts: false,
-        fileEncoding: "utf-8",
-        templatePartialsRecursive: true,
-        templatePartialsPath: "./src/templates/muiDemoForms/partials",
-        templatesPath: "./src/templates/muiDemoForms",
-        templateGenerateOncePath: [],
-        templateScaffoldPath: [],
-        templateScaffoldOncePath: [],
-    };
-    return result;
-};
 
 jest.mock("@src/arguments/getDefaultArgs", () => {
     const actuals = jest.requireActual("@src/arguments/getDefaultArgs");
@@ -48,7 +30,7 @@ const getDefaultArgsMock = getDefaultArgs as jest.MockedFunction<
 let program: PromiseGenericParameter<
     ReturnType<typeof createInFormTypescriptProgram>
 > | null = null;
-const argv = getDefaultArgsBaseTests();
+const argv = getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests();
 const fsHelper = new FileSystemHelper();
 
 describe("performGeneralSettingsSearch integtration tests", () => {
@@ -71,7 +53,7 @@ describe("performGeneralSettingsSearch integtration tests", () => {
             };
             return result;
         });
-        getDefaultArgsMock.mockImplementation(getDefaultArgsBaseTests);
+        getDefaultArgsMock.mockImplementation(getDefaultArgsSearchGeneralSettingsIntegrationTestBaseTests);
     });
 
     it("Given performGeneralSettingsSearch exists When called Then logger should be called with welcome message", async () => {
