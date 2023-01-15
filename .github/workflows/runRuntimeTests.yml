@@ -1,0 +1,69 @@
+# This is a basic workflow that is manually triggered
+name: Run Tests for Runtime (while not released)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - packages/gen-in-form-runtime/**
+  workflow_dispatch:
+
+env:
+  nodeVersion: 16.x
+  artefactName: "derfrodo_gen-in-form-runtime"
+
+jobs:
+
+  readver:
+    uses: ./.github/workflows/templateReadPackageVersion.yml
+    with:
+      folderWithPackage: packages/gen-in-form-runtime
+      packageName: "@derfrodo/gen-in-form-runtime"
+    secrets:
+      testsecret: demosecret
+
+  readname:
+    uses: ./.github/workflows/templateReadPackageName.yml
+    with:
+      folderWithPackage: packages/gen-in-form-runtime
+
+  prepare: 
+    runs-on: ubuntu-latest
+    name: "Prepare run"
+    needs: 
+    - readver
+    - readname
+    outputs:
+      packageName: ${{ needs.readname.outputs.packageName  }}
+      packageVersion: ${{ needs.readver.outputs.packageVersion  }}
+      packageVersionIsPublished: ${{ steps.evaluate_package_version.outputs.versionPublished  }}
+      artefactName: ${{ env.artefactName }}-${{ needs.readver.outputs.packageVersion }}-run-${{ github.run_id }}
+      nodeVersion: ${{ env.nodeVersion }}
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ env.nodeVersion }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.nodeVersion }}
+
+  build:
+    runs-on: ubuntu-latest
+    needs: 
+    - prepare
+    name: "Perform stuff"
+    steps:
+    - uses: actions/checkout@v3
+    - name: Using Node.js ${{ matrix.nodeVersion }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.nodeVersion }}
+    - name: Install dependencies
+      shell: bash
+      working-directory: packages/gen-in-form-runtime
+      run: npm ci
+    - uses: ./.github/workflows/actionInstallTestAndBuild
+      with:
+        artefactName: ${{ needs.prepare.outputs.artefactName }}
+        nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
+        packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
+        folderWithPackage: packages/gen-in-form-runtime
