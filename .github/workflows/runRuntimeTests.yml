@@ -67,6 +67,5 @@ jobs:
     - uses: ./.github/workflows/actionInstallTestAndBuild
       with:
         artefactName: ${{ needs.prepare.outputs.artefactName }}
-        nodeVersions: '["${{ needs.prepare.outputs.nodeVersion }}"]'
-        packageVersion:  ${{ needs.readver.outputs.packageVersion  }}
+        packageVersion:  ${{ needs.prepare.outputs.packageVersion  }}
         folderWithPackage: packages/gen-in-form-runtime
