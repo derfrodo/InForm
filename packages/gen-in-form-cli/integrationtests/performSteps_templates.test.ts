@@ -37,4 +37,22 @@ describe("performSteps integtration tests for templates", () => {
             'Found template "nesttest" in file "testdata\\testTemplates\\partials\\nesttest\\nesttest.handlebars".'
         );
     }, 15000);
+
+    it("Given performSteps exists When called AND nested partials shall be resolved Then expected templates are found", async () => {
+        const vargs: CliArgsValues = {
+            ...getDefaultPerformStepsIntegrationTestsArgsBaseTests(),
+        } as unknown as CliArgsValues;
+        await performSteps(vargs);
+        const info = getGeneratorLogger().info;
+        const infoMock = info as jest.MockedFunction<typeof info>;
+
+        const foundTemplateCalls = infoMock.mock.calls.filter((v) => {
+            const msg = v[0];
+            return (
+                typeof msg === "string" && msg.startsWith('Found template "')
+            );
+        });
+
+        expect(foundTemplateCalls).toBe([]);
+    }, 15000);
 });
