@@ -66,6 +66,6 @@ jobs:
       run: npm ci
     - uses: ./.github/workflows/actionInstallTestAndBuild
       with:
-        artefactName: "${{ needs.prepare.outputs.artefactName }}"
+        artefactName: "${{ needs.prepare.outputs.artefactName }}-${{ matrix.nodeVersion }}"
         packageVersion:  ${{ needs.prepare.outputs.packageVersion  }}
         folderWithPackage: packages/gen-in-form-runtime

@@ -40,5 +40,6 @@ runs:
   - name: Publish artefact
     uses: actions/upload-artifact@v3
     with:
-      name: ${{ inputs.artefactName }}-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
+      # name: ${{ inputs.artefactName }}-${{ inputs.packageVersion }}-${{ matrix.nodeVersion }}-run-${{ github.run_id }}
+      name: ${{ inputs.artefactName }}
       path: ${{ inputs.folderWithPackage }}
