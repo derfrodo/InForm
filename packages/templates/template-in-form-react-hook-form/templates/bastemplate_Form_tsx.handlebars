@@ -1,0 +1,56 @@
+{{>generatedFileHeader}}
+
+{{>importType inputTypeInfo }}
+
+{{#each mergedImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{#each mergedadditionalImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+import type { {{name}}FormFieldsProperties, {{name}}FormProperties } from "./{{name}}Types.generated"
+import { use{{name}}Form } from "./{{name}}Methods.generated"
+import { useMemo } from "react";
+import type { UseFormProps } from "react-hook-form";
+
+export function {{name}}FormFields<TContext = any>(props: {{name}}FormFieldsProperties<TContext>) {
+    const { formReturn, restrictions, rules } = props;
+    const { control } = formReturn;
+    
+    return <>
+{{#if byOrdering}}
+    {{#each byOrdering}}
+    {{#if input}}
+        <{{input.firstMapping.componentType.typeName}} formReturn={formReturn} control={control} path={"{{input.name}}"} rules={rules} restrictions={restrictions} /> 
+        {{!-- {{json input}} --}}
+    {{else}}
+        {{json this}}
+    {{/if}}
+    {{/each}}
+{{else}}
+    {{#each inputsWithMatchingDetails}}
+{{#if @root.detailsTypeInfo}}
+{{#if detail}}{{else
+}}        {/* The input {{input.name}} has no matching property in the details object. You might have missed requesting a property if using GraphQL */}
+{{/if}}
+    {{/if}}
+        <{{input.firstMapping.componentType.typeName}} formReturn={formReturn} control={control} path={"{{input.name}}"} rules={rules} restrictions={restrictions} /> 
+        {{!-- {{json input}}  --}}
+    {{/each}}
+{{/if}}
+    </>
+}
+
+export function {{name}}Form<TContext = any>(props: {{name}}FormProperties<TContext>) {
+    const { hookFormProps: externalFormProps, context } = props;
+    const hookFormProps = useMemo<UseFormProps<{{inputTypeInfo.typeName}}, TContext>>(()=> externalFormProps ? { ...externalFormProps, context } : { context }, [context, externalFormProps])
+    const formReturn = use{{name}}Form<TContext>(props.{{#if detailsTypeInfo}}details{{else}}partialInput{{/if}}, hookFormProps);
+    const { handleSubmit } = formReturn;
+
+    const onSubmit = (data: {{inputTypeInfo.typeName}}) => console.log(data);
+    return <form onSubmit={handleSubmit(onSubmit, () => alert("INVALID"))}>
+            <{{name}}FormFields<TContext> restrictions={props.restrictions} rules={props.rules} formReturn={formReturn} />
+            {props.button ?? <input type="submit" />}
+    </form>;
+}
+

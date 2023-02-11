@@ -1,0 +1,38 @@
+{{>generatedFileHeader}}
+
+{{>importType inputTypeInfo }}
+
+{{#if detailsTypeInfo}}
+{{>importType detailsTypeInfo}}
+{{/if}}
+
+{{!-- {{#each mergedImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{#each mergedadditionalImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}} --}}
+import type { UseFormReturn, UseFormProps } from "react-hook-form";
+
+{{>validationTypes}}
+
+{{>restrictionTypes}}
+
+export type {{name}}FormFieldsProperties<TContext = any> = { 
+    rules?: {{name}}ValidationRules;
+    restrictions?: {{name}}Restrictions;
+    formReturn: UseFormReturn<{{inputTypeInfo.typeName}}, TContext> 
+}
+
+export type {{name}}FormProperties<TContext = any> = {
+    rules?: {{name}}ValidationRules;
+    restrictions?: {{name}}Restrictions;
+    context?: TContext;
+    hookFormProps?: Omit<UseFormProps<{{inputTypeInfo.typeName}}, TContext>, "context" | "defaultValues">;
+    {{#if detailsTypeInfo}}
+    details: {{>detailsTypeName}} | null;
+    {{else}}
+    partialInput?: Partial<{{inputTypeInfo.typeName}}> | null;
+    {{/if}}
+    button?: React.ReactNode;
+}

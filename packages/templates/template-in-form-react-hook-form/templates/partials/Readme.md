@@ -1,0 +1,1 @@
+Partials for the default templates

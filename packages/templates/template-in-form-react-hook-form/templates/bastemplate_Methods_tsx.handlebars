@@ -1,0 +1,53 @@
+{{>generatedFileHeader}}
+
+{{>importType inputTypeInfo }}
+
+{{#if detailsTypeInfo}}
+{{>importType detailsTypeInfo}}
+{{/if}}
+
+{{#each mergedImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+{{#each mergedadditionalImports}}
+import { {{#each typeNames}}{{this}} {{#unless @last}}, {{/unless}}{{/each}} } from "{{ relativeImport }}";
+{{/each}}
+import { useForm, UseFormReturn, UseFormProps } from "react-hook-form";
+{{#if detailsTypeInfo}}
+import { useEffect } from "react";
+{{/if}}
+
+
+{{>formGetDefaultInput}}
+
+{{#if detailsTypeInfo}}
+{{>formMapDetailsToInput}}
+{{else}}
+{{>formMapPartialInputToInput}}
+{{/if}}
+
+export function getDefault{{name}}Input({{#if detailsTypeInfo}}details: Partial<{{>detailsTypeName}}> | null{{else}}partialInput?: Partial<{{inputTypeInfo.typeName}}> | null{{/if}}): {{inputTypeInfo.typeName}} {
+{{#if detailsTypeInfo}}
+    return map{{name}}DetailsToInput(details);
+{{else}}
+    return map{{name}}PartialInputToInput(partialInput);
+{{/if}}
+}
+
+
+export function use{{name}}Form<TContext = any>({{#if detailsTypeInfo}}details: Partial<{{>detailsTypeName}}> | null{{else}}partialInput?: Partial<{{inputTypeInfo.typeName}}> | null{{/if}}, props?: Omit<UseFormProps<{{inputTypeInfo.typeName}}, TContext>, "defaultValues">): UseFormReturn<{{inputTypeInfo.typeName}}, TContext> {
+    const result = useForm<{{inputTypeInfo.typeName}}, TContext>({
+        defaultValues: getDefault{{name}}Input({{#if detailsTypeInfo}}details{{else}}partialInput{{/if}}),
+        ...(props ?? {}),
+    });
+    return result;
+}
+
+{{#if detailsTypeInfo}}
+export function useReset{{name}}FormOnDetailsChange<TContext = any>(formReturn: UseFormReturn<{{inputTypeInfo.typeName}}, TContext>, details: Partial<{{>detailsTypeName}}> | null): void {
+    const { reset } = formReturn;
+    useEffect(() => {
+        reset(getDefault{{name}}Input(details))
+    }, [details, reset])
+}
+{{/if}}
