@@ -1,5 +1,5 @@
 import { getSingleIndexedAccessTypeIntersectionType } from "@src/common/utils/getSingleIndexedAccessTypeIntersectionType";
-import { debugTypescriptNode } from "@src/common/utils/logTypescriptNode";
+import { debugTypescriptNode } from "@src/common/utils/debugTypescriptNode";
 import { getGeneratorLogger } from "@src/logging/getGeneratorLogger";
 import { logAndError } from "@src/logging/logAndThrow";
 import ts from "typescript";

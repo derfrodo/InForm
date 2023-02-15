@@ -1,5 +1,5 @@
 import { getDeclarationForType } from "@src/common/utils/getDeclarationForType";
-import { debugTypescriptNode } from "@src/common/utils/logTypescriptNode";
+import { debugTypescriptNode } from "@src/common/utils/debugTypescriptNode";
 import { getGeneratorLogger } from "@src/logging/getGeneratorLogger";
 import ts from "typescript";
 import { getSingleNonNullUniontypeInfo } from "../../../../common/utils/getSingleNonNullUniontypeInfo";

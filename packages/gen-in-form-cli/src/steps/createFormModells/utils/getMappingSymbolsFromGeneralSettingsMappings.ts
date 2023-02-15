@@ -10,7 +10,7 @@ import {
     getOrCreateInFormsSourceFile,
     getOrCreateInFormsSourceFileFromNode,
 } from "@src/common/utils/getOrCreateInFormsSourceFile";
-import { debugTypescriptNode } from "@src/common/utils/logTypescriptNode";
+import { debugTypescriptNode } from "@src/common/utils/debugTypescriptNode";
 import { getGeneratorLogger } from "@src/logging/getGeneratorLogger";
 import { logAndError } from "@src/logging/logAndThrow";
 import { InFormGeneralSettingsData } from "@src/steps/searchGeneralSettings/types/InFormGeneralSettingsData";

@@ -2,12 +2,8 @@ import { FileSystemHelper } from "@derfrodo/frodo-s-little-helpers/dist/node";
 import { CliArgs } from "@src/common/types/CliArgs";
 import { InFormTypescriptProgram } from "@src/common/types/InFormTypescriptProgram";
 import ts from "typescript";
+import { getCompilerHost } from "./getCompilerHost";
 import { resolveFileCandidates } from "./resolveFileCandidates";
-
-function getCompilerHost(options: ts.CompilerOptions): ts.CompilerHost {
-    const host = ts.createCompilerHost(options);
-    return host;
-}
 
 export async function createInFormTypescriptProgram(
     argv: CliArgs,

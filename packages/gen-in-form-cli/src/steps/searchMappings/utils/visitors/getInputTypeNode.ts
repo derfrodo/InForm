@@ -1,5 +1,5 @@
 import { getGeneratorLogger } from "@src/logging/getGeneratorLogger";
-import { debugTypescriptNode } from "@src/common/utils/logTypescriptNode";
+import { debugTypescriptNode } from "@src/common/utils/debugTypescriptNode";
 import ts from "typescript";
 import type { InFormMappingExpression } from "../../types/InFormMappingExpression";
 
