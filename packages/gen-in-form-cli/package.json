@@ -41,6 +41,8 @@
         "linkruntime": "npm link ../gen-in-form-runtime",
         "postinstall": "npm run linkruntime",
         "generateReducers": "reducer-gen --loglevel info --addBubbleFlagForActions --analyseLiteralTypes",
+        "publish:beta": "npm publish --access public --tag beta",
+        "publish:public": "npm publish --access public",
         "prepare": "cd ../.. && husky install"
     },
     "author": "Stefan Pauka",

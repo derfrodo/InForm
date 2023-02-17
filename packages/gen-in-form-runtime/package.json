@@ -17,6 +17,8 @@
         "prestart": "npm run clean",
         "start": "tsc -w",
         "lint:old": "tsc -p tsconfig.json --noEmit && eslint \"./src/**/*.{js,ts,tsx}\" --quiet --fix",
+        "publish:beta": "npm publish --access public --tag beta",
+        "publish:public": "npm publish --access public",
         "lint": "eslint \"./src/**/*.{js,ts,tsx}\" --fix"
     },
     "author": "Stefan Pauka",
