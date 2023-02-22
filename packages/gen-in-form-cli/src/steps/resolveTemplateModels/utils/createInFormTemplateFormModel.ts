@@ -20,6 +20,8 @@ import { getMergedImports } from "./getMergedImports";
 import { getPropertyMapping } from "./getPropertyMapping";
 import { getTypeImportRelativePath } from "./getTypeImportRelativePath";
 import { getTypeName } from "./getTypeName";
+import path from "path";
+import { getRelativeImport } from "@src/common/utils/typescript/getRelativeImport";
 
 /**
  * Create Info for types like Validation / Restriction objects
@@ -340,10 +342,32 @@ export function createInFormTemplateFormModel(
         return p;
     }, []);
 
+    const sourceFile = data.mapNode.getSourceFile().fileName;
+    const generalSettingsSourceFile =
+        model.generalSettings.sourceFile.file.fileName;
     const inFormTemplateFormModel: InFormTemplateFormModel = {
         interfaceName: modelName,
         name: name ?? modelName,
-        sourceFile: data.mapNode.getSourceFile().fileName,
+        sourceFile: sourceFile,
+        sourceDirectory: path.dirname(sourceFile),
+        sourceDirectoryName: path.basename(path.dirname(sourceFile)),
+        generalSettings: {
+            sourceFile: generalSettingsSourceFile,
+            sourceDirectory: path.dirname(generalSettingsSourceFile),
+            sourceDirectoryName: path.basename(
+                path.dirname(generalSettingsSourceFile)
+            ),
+            relativeImport: getRelativeImport(
+                data.mapNode.getSourceFile(),
+                model.generalSettings.sourceFile.file
+            ),
+            relativePath: path.dirname(
+                getRelativeImport(
+                    data.mapNode.getSourceFile(),
+                    model.generalSettings.sourceFile.file
+                ) ?? ""
+            ),
+        },
 
         inputTypeInfo: getInFormTemplateTypeInfoModel(
             model,

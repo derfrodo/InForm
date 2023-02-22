@@ -20,6 +20,16 @@ export interface InFormTemplateFormModel {
     interfaceName: string;
     name: string;
     sourceFile: string;
+    sourceDirectory: string;
+    sourceDirectoryName: string;
+
+    generalSettings: {
+        sourceFile: string;
+        sourceDirectory: string;
+        sourceDirectoryName: string;
+        relativeImport: string | null;
+        relativePath: string | null;
+    };
 
     inputTypeInfo: InFormTemplateTypeInfoModel | null;
     detailsTypeInfo: InFormTemplateTypeInfoModel | null;
