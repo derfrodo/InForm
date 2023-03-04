@@ -24,7 +24,7 @@ export interface InFormDataType<
 export interface InFormDataTypeWithDefaultValue<
     TKey extends string,
     TTypeToBeMapped,
-    TDefaultValue,
+    TDefaultValue extends TTypeToBeMapped,
     TMatcher extends InFormPropertyMatcher<InFormPropertyMatcherTypes> | null = null
 > extends InFormDataType<TKey, TTypeToBeMapped, TMatcher> {
     key: TKey;
@@ -53,7 +53,7 @@ export interface InFormDataTypeWithComponent<
 export interface InFormDataTypeWithDefaultValueAndComponent<
     TKey extends string,
     TTypeToBeMapped,
-    TDefaultValue,
+    TDefaultValue extends TTypeToBeMapped,
     TComponent,
     TMatcher extends InFormPropertyMatcher<InFormPropertyMatcherTypes> | null = null
 > extends InFormDataType<TKey, TTypeToBeMapped, TMatcher> {
@@ -72,7 +72,7 @@ export interface InFormDataTypeWithDefaultValueAndComponent<
 export interface InFormEnumDataType<
     TKey extends string,
     TTypeToBeMapped extends string | number,
-    TDefaultValue,
+    TDefaultValue extends TTypeToBeMapped,
     TMatcher extends InFormPropertyMatcher<InFormPropertyMatcherTypes> | null = null
 > extends InFormDataType<TKey, TTypeToBeMapped, TMatcher> {
     /**
