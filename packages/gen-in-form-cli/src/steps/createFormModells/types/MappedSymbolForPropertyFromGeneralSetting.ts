@@ -90,6 +90,7 @@ export type MappedSymbolInfoBase = {
     symbol: ts.Symbol | string | null;
     type: MappedSymbolInfoTypes;
     declaration?: DeclarationForType | null;
+    isArray?: boolean;
 };
 
 export type MappedUnknownSymbolInfo = MappedSymbolInfoBase & {

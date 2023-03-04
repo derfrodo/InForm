@@ -10,6 +10,7 @@ import {
     MappedSymbolInfoTypes,
 } from "../types/MappedSymbolForPropertyFromGeneralSetting";
 import { getMappedLiteralSymbolInfoLiteralTypes } from "./getMappedLiteralSymbolInfoLiteralTypes";
+import { logTypescriptNode } from "@src/common/utils/logTypescriptNode";
 
 export function getMappedSymbolInfo(
     node: ts.TypeNode | null
@@ -109,8 +110,27 @@ export function getMappedSymbolInfo(
             node,
             symbol: txt,
         };
+    } else if (ts.isArrayTypeNode(node)) {
+        const txt = node.getText();
+        log.debug(`Array type found for: ${txt}`);
+        const info = getMappedSymbolInfo(node.elementType);
+        if (info) {
+            result = {
+                ...info,
+                isArray: true,
+            };
+        } else {
+            logTypescriptNode(
+                node,
+                "Evaluate symbol info failed for array-node"
+            );
+            throw logAndError(
+                `Failed to evaluate mapped symbol info for array node "${txt}".`
+            );
+        }
     } else {
         const txt = node.getText();
+        logTypescriptNode(node, "Evaluate symbol info failed for node");
         throw logAndError(
             `Failed to evaluate mapped symbol info for "${txt}".`
         );

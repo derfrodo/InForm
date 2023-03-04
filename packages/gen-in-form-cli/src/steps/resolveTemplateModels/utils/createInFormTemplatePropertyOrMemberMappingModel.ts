@@ -77,7 +77,8 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
                 ? type?.getText() ?? ""
                 : type &&
                   !ts.isUnionTypeNode(type) &&
-                  !ts.isIntersectionTypeNode(type)
+                  !ts.isIntersectionTypeNode(type) &&
+                  !ts.isArrayTypeNode(type)
                 ? getEscapedTextAsString(dec?.symbol?.escapedName)
                 : type?.getText() ?? "";
 
@@ -87,7 +88,7 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
                 : type && isKeywordTypeNode(type)
                 ? typeName
                 : type &&
-                  (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type))
+                  (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type)||ts.isArrayTypeNode(type))
                 ? typeName
                 : dec?.baseTypeNode?.getText() ?? null;
     }

@@ -39,11 +39,12 @@
         "lint": "eslint src/**/*{.ts,.js,.tsx} --fix && eslint integrationtests/**/*{.ts,.js,.tsx} --fix",
         "lint:testdata": "eslint testdata/**/*{.ts,.js,.tsx} --fix",
         "linkruntime": "npm link ../gen-in-form-runtime",
-        "postinstall": "npm run linkruntime",
+        "oldpostinstall": "npm run linkruntime",
         "generateReducers": "reducer-gen --loglevel info --addBubbleFlagForActions --analyseLiteralTypes",
         "publish:beta": "npm publish --access public --tag beta",
         "publish:public": "npm publish --access public",
-        "prepare": "cd ../.. && husky install"
+        "prepare": "cd ../.. && husky install",
+        "generateCliArgumentsValidator": "node ./dist/cli.js --globalSettingsFilesPattern \"ValidatorGeneralSettings.ts\"  --mappingFilesPattern \"CliArgsValidatorMap.ts\"  --templatesPath \"./src/arguments/validation/inform/templates\"  --templatePartialsPath \"./src/arguments/validation/inform/partials\""
     },
     "author": "Stefan Pauka",
     "license": "MIT",
@@ -56,6 +57,7 @@
         "npm-watch": "^0.11.0",
         "redux": "^4.2.0",
         "typescript": "^4.8.3",
+        "yaml": "^2.2.1",
         "yargs": "^15.4.1"
     },
     "devDependencies": {
@@ -65,6 +67,7 @@
         "@babel/plugin-proposal-decorators": "^7.15.4",
         "@babel/preset-env": "^7.15.4",
         "@babel/preset-typescript": "^7.15.0",
+        "@derfrodo/gen-in-form-runtime": "^0.1.1-beta",
         "@types/jest": "^29.2.5",
         "@types/yargs": "^15.0.14",
         "@typescript-eslint/eslint-plugin": "^2.34.0",

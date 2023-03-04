@@ -1,7 +1,8 @@
-import type { LogLevelDesc } from "loglevel";
+import type { LogLevel } from "./LogLevel";
+import type { PathInfo } from "./PathInfo";
 
 export type InFormCliArguments = {
-    loglevel: LogLevelDesc;
+    loglevel: LogLevel;
     fileEncoding: BufferEncoding;
 
     srcFolder: string;
@@ -13,12 +14,12 @@ export type InFormCliArguments = {
     programFilesPattern: string[];
     logAsts?: boolean;
 
-    templatesPath: string | string[];
-    templateGenerateOncePath: string | string[];
+    templatesPath: PathInfo;
+    templateGenerateOncePath: PathInfo;
 
-    templateScaffoldOncePath: string | string[];
-    templateScaffoldPath: string | string[];
+    templateScaffoldOncePath: PathInfo;
+    templateScaffoldPath: PathInfo;
 
-    templatePartialsPath: string | string[];
+    templatePartialsPath: PathInfo;
     templatePartialsRecursive: boolean;
 };

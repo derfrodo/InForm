@@ -38,7 +38,7 @@ export function getDeclarationForSymbol(
                   ) as ts.PropertySignature[])
                 : null;
         if (members === null) {
-            const msg = `Literal type expected. no members found. Did you use an external type? This must fail for ${typeSymbol.escapedName} :(`;
+            const msg = `Literal type expected. no members found. Did you use an external type? This must fail for ${typeSymbol.escapedName} :( - you might also want to check if you are using aliases, which aren't supported at the moment`;
             log.error(msg);
             throw new Error(msg);
         }
