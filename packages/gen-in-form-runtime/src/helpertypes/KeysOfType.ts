@@ -12,7 +12,6 @@
  * // leads to type StringProps = "name" | "surname"
  *
  */
-
 export type KeysOfType<T extends {}, TProp> = Required<
     {
         [P in keyof T]: T[P] extends TProp ? P : never;
