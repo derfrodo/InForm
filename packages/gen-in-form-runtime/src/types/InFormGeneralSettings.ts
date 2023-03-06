@@ -10,9 +10,6 @@ export interface InFormDataType<
     TTypeToBeMapped,
     TMatcher extends InFormPropertyMatcher<InFormPropertyMatcherTypes> | null = null
 > {
-    /**
-     * in Bachelor Thesis: "Feldidentifikator"
-     */
     key: TKey;
     inputData: TTypeToBeMapped;
     matcher: TMatcher;

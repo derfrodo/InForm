@@ -8,14 +8,6 @@ export interface GroupAndOrderTypes<
     fields: GroupAndOrderFields<TDataType, TDataKeys /*TGroupnames*/>;
 }
 
-// export type GroupAndOrderGroups<TGroupnames extends string> = {
-//     [key in TGroupnames]: FormGroupOrderInfo;
-// };
-
-// export type FormGroupOrderInfo = {
-//     ordinal: number;
-// };
-
 export type GroupAndOrderFields<
     TDataType extends {},
     TDataKeys extends keyof Required<TDataType> & string = keyof Required<TDataType> & string /*,
@@ -26,7 +18,7 @@ export type GroupAndOrderFields<
 
 // export type FormFieldGroupOrderInfo<TGroupname extends string = string> = {
 export type FormFieldGroupOrderInfo = {
-    ordinal: number;
+    ordinal?: number;
     isHidden?: boolean;
     /**
      * NO GROUPNAMES FOR NOW
