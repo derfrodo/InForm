@@ -1,9 +1,10 @@
 import type { LogLevel } from "./LogLevel";
+import type { FileEncoding } from "./FileEncoding";
 import type { PathInfo } from "./PathInfo";
 
 export type InFormCliArguments = {
     loglevel: LogLevel;
-    fileEncoding: BufferEncoding;
+    fileEncoding: FileEncoding;
 
     srcFolder: string;
     globalSettingsFilesPattern: string[];

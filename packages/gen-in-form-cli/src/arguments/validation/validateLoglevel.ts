@@ -1,21 +1,18 @@
-import { KeysOfType, PropType } from "@derfrodo/gen-in-form-runtime";
+import { PropType, TypedKeysOfType } from "@derfrodo/gen-in-form-runtime";
 import { InFormCliArguments } from "@src/common/types/InFormCliArguments";
 import { LogLevel } from "@src/common/types/LogLevel";
 
+type InFormCliArgumentsKeysOfType<T> = TypedKeysOfType<
+    InFormCliArguments,
+    T,
+    string
+>;
+type InFormCliArgumentsPropertyType<TKey extends keyof InFormCliArguments> =
+    PropType<InFormCliArguments, TKey>;
 
-type InFormCliArgumentsKeysOfType<T> = KeysOfType<InFormCliArguments, T> & string
-type InFormCliArgumentsPropertyType<TKey extends keyof InFormCliArguments> = PropType<InFormCliArguments, TKey>
-
-
-
-export declare type StringKeysOfType<T extends {}, TProp, TKeyType extends string | number | symbol = string> = Required<{
-    [P in keyof T]: T[P] extends TProp ? P extends string ? P : never : never;
-}[keyof T]> & TKeyType;
-
-
-type logleveltype = StringKeysOfType<InFormCliArguments, LogLevel, number>
-
-export function validateLoglevel<TKey extends InFormCliArgumentsKeysOfType<LogLevel>>(
+export function validateLoglevel<
+    TKey extends InFormCliArgumentsKeysOfType<LogLevel>
+>(
     obj: any,
     propertyName: TKey
 ): obj is {

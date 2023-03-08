@@ -4,6 +4,8 @@ import {
     InFormDataTypeWithDefaultValueAndComponent,
     InFormGeneralSettings
 } from "@derfrodo/gen-in-form-runtime";
+import { FileEncoding } from "@src/common/types/FileEncoding";
+import { PathInfo } from "@src/common/types/PathInfo";
 import { LogLevel } from "../../common/types/LogLevel";
 import { validateProperty } from "./validateProperty";
 
@@ -19,9 +21,9 @@ interface FM extends InFormDataTypes<string, string> {
         "info",
         typeof validateProperty
     >;
-    ["BufferEncoding"]: InFormDataTypeWithDefaultValueAndComponent<
-        "BufferEncoding",
-        BufferEncoding,
+    ["FileEncoding"]: InFormDataTypeWithDefaultValueAndComponent<
+        "FileEncoding",
+        FileEncoding,
         "utf8",
         typeof validateProperty
     >;
@@ -37,6 +39,15 @@ interface FM extends InFormDataTypes<string, string> {
         string[],
         typeof validateProperty
     >;
+
+
+    ["PathInfo"]: InFormDataTypeWithComponent<
+        "PathInfo_key",
+        PathInfo,
+        typeof validateProperty
+    >;
+
+    
     // ["ENABLED"]: InFormDataTypeWithDefaultValueAndComponent<"ENABLED", LogLevelDesc, true, typeof validateProperty, InFormPropertyMatcherRegexRegex<typeof enabled>>
     // ["TOGGLE"]: InFormDataTypeWithDefaultValueAndComponent<"TOGGLE", boolean, false, typeof RhfSwitch>
 
