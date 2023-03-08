@@ -15,7 +15,7 @@ env:
 jobs:
 
   readver:
-    uses: ./.github/workflows/old_not used/templateReadPackageVersion.yml
+    uses: ./.github/workflows/templateReadPackageVersion.yml
     with:
       folderWithPackage: packages/gen-in-form-cli
       packageName: "@derfrodo/gen-in-form-cli"
@@ -23,7 +23,7 @@ jobs:
       testsecret: demosecret
 
   readname:
-    uses: ./.github/workflows/old_not used/templateReadPackageName.yml
+    uses: ./.github/workflows/templateReadPackageName.yml
     with:
       folderWithPackage: packages/gen-in-form-cli
 
