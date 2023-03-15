@@ -15,17 +15,17 @@ const getDefaultArgsMock = getDefaultArgs as jest.MockedFunction<
     typeof getDefaultArgs
 >;
 
-describe("performSteps aliasTests test", () => {
+describe("performSteps pickTests test", () => {
     beforeEach(async () => {
         jest.clearAllMocks();
         getDefaultArgsMock.mockImplementation(() => ({
             ...getDefaultPerformStepsIntegrationTestsArgsBaseTests(),
-            srcFolder: "./testdataWithAdditionalTests/aliasTests",
-            templatesPath: "./testdataWithAdditionalTests/aliasTests/templates",
+            srcFolder: "./testdataWithAdditionalTests/pickTests",
+            templatesPath: "./testdataWithAdditionalTests/pickTests/templates",
         }));
     });
 
-    it("Given performSteps exists When called for alias test Then it performs", async () => {
+    it("Given performSteps exists When called for picktest Then it performs", async () => {
         const vargs: CliArgsValues = {
             ...getDefaultArgs(),
         } as unknown as CliArgsValues;
