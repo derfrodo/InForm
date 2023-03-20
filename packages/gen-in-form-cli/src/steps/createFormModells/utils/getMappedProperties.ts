@@ -13,8 +13,31 @@ export async function getMappedProperties(
     const result: MappedProperty[] = [];
     for (const inpt of symbols) {
         const { escapedName } = inpt;
+        let valueDeclaration = inpt.valueDeclaration;
 
-        const valueDeclaration = inpt.valueDeclaration;
+        if (
+            inpt.getFlags() ===
+            (ts.SymbolFlags.Transient | ts.SymbolFlags.Property)
+        ) {
+            log.debug(
+                `Property "${escapedName}" has transient property symbol (might be a Pick<> or something).`
+            );
+            const valueDeclarations = inpt.declarations?.filter((d) =>
+                ts.isPropertySignature(d)
+            );
+
+            if (
+                valueDeclarations === undefined ||
+                (valueDeclarations.length ?? 0) !== 1
+            ) {
+                log.warn(
+                    `Property "${escapedName}" has no unique property signature in its symbol.`
+                );
+            } else {
+                valueDeclaration = valueDeclarations[0];
+            }
+        }
+
         if (valueDeclaration && ts.isPropertySignature(valueDeclaration)) {
             const propName = getNameForProperty(valueDeclaration.name);
             log.debug(`Resolve mapping for value of ${propName}.`);

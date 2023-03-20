@@ -30,6 +30,11 @@ export function getDeclarationForType(
     let typeSymbol: ts.Symbol | null = getNodeSymbol(node);
     let typeArgumentDeclarations: (DeclarationForType | null)[] | null = null;
 
+    if (node && ts.isTypeReferenceNode(node) ) {
+        // Return type!?
+
+    }
+
     if (node && ts.isTypeReferenceNode(node)) {
         typeSymbol = getNodeSymbol(node.typeName);
         if ((node.typeArguments?.length ?? 0) > 0) {
@@ -44,6 +49,10 @@ export function getDeclarationForType(
         }
     }
 
+    if (node && ts.isRestTypeNode(node)) {
+        typeSymbol = getNodeSymbol(node);
+    }
+    
     if (node && isEntityNameNode(node)) {
         typeSymbol = getNodeSymbol(node);
     }
