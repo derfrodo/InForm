@@ -15,6 +15,7 @@ function doWithReturn(): PickByTypeofType {
     }
 }
 
-export interface PickMap extends InFormMapping<ReturnType<typeof doWithReturn>> {
+type MapType= ReturnType<typeof doWithReturn>;
+export interface PickMap extends InFormMapping<MapType> {
     name: "PickMapped";
 }

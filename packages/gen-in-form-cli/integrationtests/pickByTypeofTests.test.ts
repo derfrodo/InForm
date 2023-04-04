@@ -29,6 +29,6 @@ describe("performSteps pickByTypeofTests test", () => {
         const vargs: CliArgsValues = {
             ...getDefaultArgs(),
         } as unknown as CliArgsValues;
-        await performSteps(vargs);
+    await performSteps(vargs);
     }, 15_000);
 });
