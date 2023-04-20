@@ -26,6 +26,8 @@ export interface InFormTemplatePropertyOrMemberMappingModel {
 
     mappedBy: MappedSymbolInformTemplateModel[];
     firstMapping: MappedSymbolInformTemplateModel | null;
+
+    nestedPropertyNames?: string[];
 }
 
 export function isDefaultValueModel(obj: any): obj is DefaultValueModel {

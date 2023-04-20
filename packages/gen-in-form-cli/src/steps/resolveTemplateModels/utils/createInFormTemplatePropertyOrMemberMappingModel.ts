@@ -14,6 +14,9 @@ import { FormModell } from "../../createFormModells/types/FormModell";
 import { InFormTemplatePropertyOrMemberMappingModel } from "../types/InFormTemplatePropertyOrMemberMappingModel";
 import { getMappedByTemplateModel } from "./getMappedByTemplateModel";
 import { isKeywordTypeNode } from "../../../common/utils/typescript/isKeywordTypeNode";
+import { getDeclaredTypeForSymbol } from "@src/common/utils/getDeclaredTypeForSymbol";
+import { getTypeChecker } from "@src/common/utils/getTypeChecker";
+import { getNodeSymbol } from "@src/common/utils/getNodeSymbol";
 
 /**
  * Returns true, if type is deemed "importworthy"
@@ -70,27 +73,27 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
         log.info("Resolve name for mapped member: ", { type: type?.getText() });
         typeName =
             type &&
-            ts.isLiteralTypeNode(type) &&
-            ts.isStringLiteral(type.literal)
+                ts.isLiteralTypeNode(type) &&
+                ts.isStringLiteral(type.literal)
                 ? type.literal.text
                 : type && isKeywordTypeNode(type)
-                ? type?.getText() ?? ""
-                : type &&
-                  !ts.isUnionTypeNode(type) &&
-                  !ts.isIntersectionTypeNode(type) &&
-                  !ts.isArrayTypeNode(type)
-                ? getEscapedTextAsString(dec?.symbol?.escapedName)
-                : type?.getText() ?? "";
+                    ? type?.getText() ?? ""
+                    : type &&
+                        !ts.isUnionTypeNode(type) &&
+                        !ts.isIntersectionTypeNode(type) &&
+                        !ts.isArrayTypeNode(type)
+                        ? getEscapedTextAsString(dec?.symbol?.escapedName)
+                        : type?.getText() ?? "";
 
         typeNameFull =
             type && ts.isLiteralTypeNode(type)
                 ? typeName
                 : type && isKeywordTypeNode(type)
-                ? typeName
-                : type &&
-                  (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type)||ts.isArrayTypeNode(type))
-                ? typeName
-                : dec?.baseTypeNode?.getText() ?? null;
+                    ? typeName
+                    : type &&
+                        (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type) || ts.isArrayTypeNode(type))
+                        ? typeName
+                        : dec?.baseTypeNode?.getText() ?? null;
     }
 
     if (typeName === null || typeNameFull === null) {
@@ -112,6 +115,20 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
         // throw new Error("No relative Import for property resolved");
     }
     const mappedBy = mapped.map((m) => getMappedByTemplateModel(m, model));
+
+
+    let propertyNames: string[] | undefined;
+    if (type && ts.isTypeReferenceNode(type)) {
+        log.info("Find nested properties for: ", { type: typeName });
+
+        const innerDeclaration = getDeclarationForType(type);
+        propertyNames = [
+            ...(innerDeclaration?.members?.map((p) => p.name.getText()) || []),
+            ...(innerDeclaration?.properties?.map((p) => p.name) || []),
+        ];
+    }
+
+
     const result: InFormTemplatePropertyOrMemberMappingModel = {
         propertyOrMemberModel: "propertyOrMemberModel",
         referencingModel: {
@@ -124,6 +141,7 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
         relativeImport,
         mappedBy,
         firstMapping: mappedBy.length > 0 ? mappedBy[0] : null,
+        ...(propertyNames ? { nestedPropertyNames: propertyNames } : {}),
     };
     return result;
 }
