@@ -119,13 +119,21 @@ export function createInFormTemplatePropertyOrMemberMappingModel(
 
     let propertyNames: string[] | undefined;
     if (type && ts.isTypeReferenceNode(type)) {
-        log.info("Find nested properties for: ", { type: typeName });
+        try {
 
-        const innerDeclaration = getDeclarationForType(type);
-        propertyNames = [
-            ...(innerDeclaration?.members?.map((p) => p.name.getText()) || []),
-            ...(innerDeclaration?.properties?.map((p) => p.name) || []),
-        ];
+            log.info("Find nested properties for: ", { type: typeName });
+
+            const innerDeclaration = getDeclarationForType(type);
+            propertyNames = [
+                ...(innerDeclaration?.members?.map((p) => p.name.getText()) || []),
+                ...(innerDeclaration?.properties?.map((p) => p.name) || []),
+            ];
+
+        } catch (e) {
+            log.error(
+                "Failed to resolve properties for type. Array with names of nested properties will be omitted."
+            );
+        }
     }
 
 
