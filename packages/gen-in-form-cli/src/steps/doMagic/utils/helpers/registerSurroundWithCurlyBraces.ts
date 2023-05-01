@@ -5,14 +5,21 @@ export const registerSurroundWithCurlyBraces = (
 ): void => {
     handlebars.registerHelper(
         "surroundWithCurlyBraces",
-        function (textOrThis: any, options: HelperOptions) {
-            if (typeof textOrThis === "string") {
-                const result = `{${textOrThis}}`;
+        function (
+            this: any,
+            textOrOptions: string | undefined | HelperOptions
+        ) {
+            if (typeof textOrOptions === "string") {
+                const result = `{${textOrOptions}}`;
                 return new Handlebars.SafeString(result);
-            } else {
-                const data = options.fn(textOrThis, options);
+            } else if (textOrOptions) {
+                const data = textOrOptions.fn(this, textOrOptions);
                 const result = `{${data}}`;
                 return result;
+            } else {
+                throw new Error(
+                    "Wrong usage of helper surroundWithCurlyBraces. Please review unittests for clarification."
+                );
             }
         }
     );
