@@ -11,5 +11,3 @@ export const registerIfStartsWith = (handlebars: typeof Handlebars): void => {
         }
     );
 };
-
-

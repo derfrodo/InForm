@@ -1,0 +1,7 @@
+
+{{#each mappedInputProperties}}
+{{#findElementByPropertyValueAndRegex mappedBy "key" "2"}}
+Expected to FOUND String2
+{{json this}}
+{{/findElementByPropertyValueAndRegex}}
+{{/each}}
