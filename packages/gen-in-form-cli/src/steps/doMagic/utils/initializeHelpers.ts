@@ -4,6 +4,7 @@ import { registerIfStartsWith } from "./helpers/registerIfStartsWith";
 import { registerSwitchByHelper } from "./helpers/registerSwitchByHelper";
 import { registerToPropertyName } from "./helpers/registerToPropertyName";
 import { registerToPropertyValue } from "./helpers/registerToPropertyValue";
+import { registerSurroundWithCurlyBraces } from "./helpers/registerSurroundWithCurlyBraces";
 
 export async function initializeHelpers(): Promise<void> {
     handlebars.registerHelper("json", function (context) {
@@ -14,4 +15,5 @@ export async function initializeHelpers(): Promise<void> {
     registerIfStartsWith(handlebars);
     registerIfIsEqualHelper(handlebars);
     registerSwitchByHelper(handlebars);
+    registerSurroundWithCurlyBraces(handlebars);
 }
