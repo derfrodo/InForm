@@ -4,6 +4,7 @@ tmp
 *.generated.ts
 *.generated.tsx
 *.generated.json
+*.generated.txt
 
 __queuestorage__
 
