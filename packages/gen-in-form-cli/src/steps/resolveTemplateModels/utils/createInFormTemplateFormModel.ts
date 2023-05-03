@@ -112,7 +112,8 @@ type OrderingField = {
     groupName: null | string;
 };
 function getFieldsFromOrderByObjectLiteral(
-    orderingType: FormMappingOrderingTypeInfoEx
+    orderingType: FormMappingOrderingTypeInfoEx,
+    inputPropertyNames: string[]
 ): OrderingField[] {
     const fieldProperty = getPropertyByName(
         orderingType.expression,
@@ -178,13 +179,23 @@ function getFieldsFromOrderByObjectLiteral(
                 { fields: JSON.stringify(fields), orderingType }
             );
         }
-        return fields
-            .map((f) =>
+
+        const missingFields = inputPropertyNames.filter((fieldName) =>
+            fields.every((q) => q.name !== fieldName)
+        );
+
+        return [
+            ...fields.map((f) =>
                 f.ordinal === null
                     ? { ...f, ordinal: Number.MAX_SAFE_INTEGER }
                     : f
-            )
-            .filter((f) => !f.isHidden) as unknown as OrderingField[];
+            ),
+            ...missingFields.map((fieldName) => ({
+                name: fieldName,
+                ordinal: Number.MAX_SAFE_INTEGER,
+                isHidden: false,
+            })),
+        ].filter((f) => !f.isHidden) as unknown as OrderingField[];
     } else {
         throw logAndError(
             "Failed to evaluate ordering infos. Assumed object literal, but got something different",
@@ -252,7 +263,15 @@ export function createInFormTemplateFormModel(
     if (model.data.orderingType) {
         if (model.data.orderingType.type === null) {
             const fields = getFieldsFromOrderByObjectLiteral(
-                model.data.orderingType
+                model.data.orderingType,
+                [
+                    ...inputsWithMatchingDetails
+                        .filter((i) => i.input)
+                        .map((i) => i.input.name ?? ""),
+                    ...inputsWithMatchingDetails
+                        .filter((i) => i.input === null && i.detail)
+                        .map((i) => i.detail?.name ?? ""),
+                ].filter((n) => n !== "")
             );
 
             byOrdering = fields

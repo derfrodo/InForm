@@ -29,6 +29,7 @@ describe("performSteps hideAndOrder tests", () => {
         const vargs: CliArgsValues = {
             ...getDefaultArgs(),
         } as unknown as CliArgsValues;
+        // will include missing  fields if not called in order info.
         await performSteps(vargs);
     }, 15_000);
 });
