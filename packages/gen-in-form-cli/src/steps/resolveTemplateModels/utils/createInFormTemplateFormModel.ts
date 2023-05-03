@@ -172,12 +172,19 @@ function getFieldsFromOrderByObjectLiteral(
                     Number.isNaN(f.ordinal)
             ).length > 0
         ) {
-            throw logAndError(
-                "Failed to evaluate ordering infos. Fields contain either null for name or ordinal. Also negative ordinals are not supported as of now. Please also add an ordinal even if field is set to hidden. this is forbidden!",
+            const log = getGeneratorLogger();
+            log.warn(
+                "Evaluate ordering infos: Fields contain either null for name or ordinal.",
                 { fields: JSON.stringify(fields), orderingType }
             );
         }
-        return fields.filter((f) => !f.isHidden) as unknown as OrderingField[];
+        return fields
+            .map((f) =>
+                f.ordinal === null
+                    ? { ...f, ordinal: Number.MAX_SAFE_INTEGER }
+                    : f
+            )
+            .filter((f) => !f.isHidden) as unknown as OrderingField[];
     } else {
         throw logAndError(
             "Failed to evaluate ordering infos. Assumed object literal, but got something different",

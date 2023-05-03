@@ -1,3 +1,6 @@
+/**
+ * Actually this is ordering and hiding properties as of now
+ */
 export interface GroupAndOrderTypes<
     TDataType extends {},
     TDataKeys extends keyof Required<TDataType> & string = keyof Required<TDataType> & string /*,
@@ -7,16 +10,20 @@ export interface GroupAndOrderTypes<
     // groups?: GroupAndOrderGroups<TGroupnames>;
     fields: GroupAndOrderFields<TDataType, TDataKeys /*TGroupnames*/>;
 }
-
+/**
+ * Used for fields of {@link GroupAndOrderTypes}
+ */
 export type GroupAndOrderFields<
     TDataType extends {},
     TDataKeys extends keyof Required<TDataType> & string = keyof Required<TDataType> & string /*,
     TGroupnames extends string = string*/
 > = {
-    [key in TDataKeys]: FormFieldGroupOrderInfo; // FormFieldGroupOrderInfo<TGroupnames>;
+    [key in TDataKeys]?: FormFieldGroupOrderInfo; // FormFieldGroupOrderInfo<TGroupnames>;
 };
 
-// export type FormFieldGroupOrderInfo<TGroupname extends string = string> = {
+/**
+ * Info for field. This is to be used inside {@link GroupAndOrderFields}
+ */
 export type FormFieldGroupOrderInfo = {
     ordinal?: number;
     isHidden?: boolean;

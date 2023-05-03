@@ -15,17 +15,17 @@ const getDefaultArgsMock = getDefaultArgs as jest.MockedFunction<
     typeof getDefaultArgs
 >;
 
-describe("performSteps handlebarsHelpersTest tests", () => {
+describe("performSteps hideAndOrder tests", () => {
     beforeEach(async () => {
         jest.clearAllMocks();
         getDefaultArgsMock.mockImplementation(() => ({
             ...getDefaultPerformStepsIntegrationTestsArgsBaseTests(),
-            srcFolder: "./testdataWithAdditionalTests/handlebarsHelpersTest",
-            templatesPath: "./testdataWithAdditionalTests/handlebarsHelpersTest/templates",
+            srcFolder: "./testdataWithAdditionalTests/hideAndOrderTest",
+            templatesPath: "./testdataWithAdditionalTests/hideAndOrderTest/templates",
         }));
     });
 
-    it("Given performSteps exists When called for handlebarsHelpersTest test Then it performs", async () => {
+    it("Given performSteps exists When called for hideAndOrder test Then it performs", async () => {
         const vargs: CliArgsValues = {
             ...getDefaultArgs(),
         } as unknown as CliArgsValues;
