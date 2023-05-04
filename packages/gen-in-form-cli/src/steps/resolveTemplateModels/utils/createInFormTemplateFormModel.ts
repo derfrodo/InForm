@@ -73,8 +73,8 @@ function getPropertyByName(
 ): ts.ObjectLiteralElementLike | null {
     const fieldProperty = ts.isObjectLiteralExpression(node)
         ? node.properties.find(
-              (p) => p.name && getNameForProperty(p.name) === propertyName
-          )
+            (p) => p.name && getNameForProperty(p.name) === propertyName
+        )
         : null;
     if (fieldProperty === null) {
         logAndError(
@@ -138,29 +138,29 @@ function getFieldsFromOrderByObjectLiteral(
                 name: prop.name ? getNameForProperty(prop.name) : null,
                 ordinal:
                     ordinal !== null &&
-                    ts.isPropertyAssignment(ordinal) &&
-                    ordinal.initializer &&
-                    ts.isLiteralExpression(ordinal.initializer) &&
-                    ordinal.initializer.kind === SyntaxKind.NumericLiteral
+                        ts.isPropertyAssignment(ordinal) &&
+                        ordinal.initializer &&
+                        ts.isLiteralExpression(ordinal.initializer) &&
+                        ordinal.initializer.kind === SyntaxKind.NumericLiteral
                         ? Number(ordinal.initializer.text)
                         : null,
                 isHidden:
                     isHidden !== null &&
-                    ts.isPropertyAssignment(isHidden) &&
-                    isHidden.initializer
+                        ts.isPropertyAssignment(isHidden) &&
+                        isHidden.initializer
                         ? isHidden.initializer.kind === SyntaxKind.TrueKeyword
                             ? true
                             : isHidden.initializer.kind ===
-                              SyntaxKind.FalseKeyword
-                            ? false
-                            : null
+                                SyntaxKind.FalseKeyword
+                                ? false
+                                : null
                         : null,
                 groupName:
                     groupName !== null &&
-                    ts.isPropertyAssignment(groupName) &&
-                    groupName.initializer &&
-                    ts.isLiteralExpression(groupName.initializer) &&
-                    groupName.initializer.kind === SyntaxKind.StringLiteral
+                        ts.isPropertyAssignment(groupName) &&
+                        groupName.initializer &&
+                        ts.isLiteralExpression(groupName.initializer) &&
+                        groupName.initializer.kind === SyntaxKind.StringLiteral
                         ? groupName.initializer.text
                         : null,
             };
@@ -256,22 +256,26 @@ export function createInFormTemplateFormModel(
     const detailsTypeInfo = model.data.indexedDetailsTypeDetails
         ? getInFormTemplateTypeInfoModel(model, "indexedDetailsTypeDetails")
         : model.data.detailsTypeDetails
-        ? getInFormTemplateTypeInfoModel(model, "detailsTypeDetails")
-        : null;
+            ? getInFormTemplateTypeInfoModel(model, "detailsTypeDetails")
+            : null;
 
     let byOrdering: Partial<MatchingInFormTeplateMember>[] = [];
     if (model.data.orderingType) {
         if (model.data.orderingType.type === null) {
+            const allPropertyNames = [
+                ...inputsWithMatchingDetails
+                    .filter((i) => i.input)
+                    .map((i) => i.input.name ?? ""),
+                ...inputsWithMatchingDetails
+                    .filter((i) => i.input === null && i.detail)
+                    .map((i) => i.detail?.name ?? ""),
+                ...detailsWithoutInputs
+                    .filter((i) => i.name !== null)
+                    .map((f) => f.name ?? ""),
+            ].filter((n) => n !== "");
             const fields = getFieldsFromOrderByObjectLiteral(
                 model.data.orderingType,
-                [
-                    ...inputsWithMatchingDetails
-                        .filter((i) => i.input)
-                        .map((i) => i.input.name ?? ""),
-                    ...inputsWithMatchingDetails
-                        .filter((i) => i.input === null && i.detail)
-                        .map((i) => i.detail?.name ?? ""),
-                ].filter((n) => n !== "")
+                allPropertyNames
             );
 
             byOrdering = fields

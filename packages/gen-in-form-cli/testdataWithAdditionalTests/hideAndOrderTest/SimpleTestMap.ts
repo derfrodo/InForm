@@ -2,7 +2,7 @@ import {
     GroupAndOrderTypes,
     InFormMapping,
 } from "@derfrodo/gen-in-form-runtime";
-import { TestObj } from "./TestObj";
+import { TestDetailsObj, TestObj } from "./TestObj";
 
 const groupAndOrderFields: GroupAndOrderTypes<TestObj> = {
     fields: {
@@ -14,5 +14,10 @@ const groupAndOrderFields: GroupAndOrderTypes<TestObj> = {
 
 export interface SimpleTestMap extends InFormMapping<TestObj> {
     name: "TestObj";
+    groupAndOrderFields: typeof groupAndOrderFields;
+}
+
+export interface SimpleTestMap2 extends InFormMapping<TestObj, TestDetailsObj> {
+    name: "TestObjWDetails";
     groupAndOrderFields: typeof groupAndOrderFields;
 }
