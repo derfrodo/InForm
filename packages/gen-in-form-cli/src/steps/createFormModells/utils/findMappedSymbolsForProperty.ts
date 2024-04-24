@@ -9,7 +9,7 @@ import { logAndError } from "@src/logging/logAndThrow";
 import { getNameForProperty } from "@src/common/utils/typescript/getNameForProperty";
 
 export function findMappedSymbolsForProperty(
-    propertySignature: ts.PropertySignature | null,
+    propertySignature: ts.PropertySignature | ts.PropertyDeclaration | null,
     symbols: MappedSymbols[]
 ): MappedSymbols[] {
     const name =
@@ -26,12 +26,12 @@ export function findMappedSymbolsForProperty(
     const matches =
         info !== null
             ? symbols.filter((s) => {
-                  const result =
-                      s.matcherForProperty === null
-                          ? isDataTypeSymbol(s, info)
-                          : s.matcherForProperty.match(propertySignature);
-                  return result;
-              })
+                const result =
+                    s.matcherForProperty === null
+                        ? isDataTypeSymbol(s, info)
+                        : s.matcherForProperty.match(propertySignature);
+                return result;
+            })
             : [];
 
     return matches ?? null;

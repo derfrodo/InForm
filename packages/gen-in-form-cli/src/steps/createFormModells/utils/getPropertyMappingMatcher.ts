@@ -40,12 +40,12 @@ export function getPropertyMappingMatcher(
                 : null;
         const initializer =
             expr &&
-            expr.valueDeclaration &&
-            ts.isVariableDeclaration(expr.valueDeclaration) &&
-            expr.valueDeclaration.initializer &&
-            ts.isRegularExpressionLiteral(expr.valueDeclaration.initializer)
+                expr.valueDeclaration &&
+                ts.isVariableDeclaration(expr.valueDeclaration) &&
+                expr.valueDeclaration.initializer &&
+                ts.isRegularExpressionLiteral(expr.valueDeclaration.initializer)
                 ? (expr.valueDeclaration
-                      .initializer as ts.RegularExpressionLiteral)
+                    .initializer as ts.RegularExpressionLiteral)
                 : null;
         const text = initializer?.text;
         const matcher = /^(\/)(.*)(\/)([^\/]*)$/;
@@ -53,9 +53,9 @@ export function getPropertyMappingMatcher(
         const regex =
             matches && matches.length === 5
                 ? new RegExp(
-                      matches[2],
-                      matches[4].length > 0 ? matches[4] : undefined
-                  )
+                    matches[2],
+                    matches[4].length > 0 ? matches[4] : undefined
+                )
                 : null;
 
         if (!regex) {
@@ -69,7 +69,7 @@ export function getPropertyMappingMatcher(
             );
         }
         return {
-            match: (property: ts.PropertySignature): boolean => {
+            match: (property: ts.PropertySignature | ts.PropertyDeclaration): boolean => {
                 const name = getNameForProperty(property.name);
                 const result = (name && regex.test(name)) || false;
                 return result;

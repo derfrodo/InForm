@@ -10,6 +10,9 @@ export function getNameForProperty(
         return oldWay ? propertyName.getText() : propertyName.text; //.escapedText + "";
         // return propertyName.getText(); //.escapedText + "";
     }
+    if(ts.isStringLiteral(propertyName)) {
+        return propertyName.text;
+    }
     log.error("No name has been resolved for propertyName.", {
         type: ts.SyntaxKind[propertyName.kind],
     });

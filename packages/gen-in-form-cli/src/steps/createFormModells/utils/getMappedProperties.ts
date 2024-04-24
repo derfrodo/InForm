@@ -74,12 +74,48 @@ export async function getMappedProperties(
                     `Failed to find mapping for value ${inpt.escapedName}. Property type is undefined.`
                 );
             }
+        } else if (valueDeclaration && ts.isPropertyDeclaration(valueDeclaration)) {
+            const propName = getNameForProperty(valueDeclaration.name);
+            log.debug(`Resolve mapping for value of ${propName}.`);
+
+
+            if (valueDeclaration.type) {
+                const mappedInFormDataType = await findMappedSymbolsForProperty(
+                    valueDeclaration,
+                    mappedSymbols
+                );
+                if (mappedInFormDataType) {
+                    if (mappedInFormDataType.length === 0) {
+                        log.warn(
+                            "No mapped types have been found for property",
+                            {
+                                type: valueDeclaration.type,
+                                propName,
+                                mappedSymbols,
+                            }
+                        );
+                    }
+                    result.push({
+                        mapped: mappedInFormDataType,
+                        signature: valueDeclaration,
+                        name: propName,
+                        propertySymbol: inpt,
+                    });
+                } else {
+                    log.error(
+                        `Failed to resolve mapping for value ${escapedName}. Property type is undefined.`
+                    );
+                }
+            } else {
+                log.error(
+                    `Failed to find mapping for value ${inpt.escapedName}. Property type is undefined.`
+                );
+            }
+
         } else {
             log.error(
-                `Failed to find mapping for value ${
-                    inpt.escapedName
-                }. Property access expression expected, but got ${
-                    valueDeclaration?.kind ?? "undefined"
+                `Failed to find mapping for value ${inpt.escapedName
+                }. Property access expression expected, but got ${(valueDeclaration as any).body} ${valueDeclaration?.kind ?? "undefined"
                 }`
             );
         }

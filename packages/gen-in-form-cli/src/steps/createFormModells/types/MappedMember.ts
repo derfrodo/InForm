@@ -9,6 +9,6 @@ export type MappedMember = {
     /**
      * valueDeclaration of @see {@link MappedProperty.propertySymbol}
      */
-    signature: ts.PropertySignature;
+    signature: ts.PropertySignature | ts.PropertyDeclaration;
     mapped: MappedSymbolForMemberOrPropertyFromGeneralSetting[];
 };
